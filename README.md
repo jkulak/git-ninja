@@ -50,10 +50,29 @@ To see a condensed version of the help, with a list of available options for a c
 
 # 2. Config
 
-* `$ git config --local user.email "jakub.kulak@gmail.com"`
-* local
-* global
-* setting aliases
+Git stores it's configuration in three places (for different scopes): system (applied to all users on the system), global (applied to all user's repositories) and local (per project).
+
+* System config is stored in `/etc/gitconfig` and you need admin rights to modify it
+* Global config is stored in user's home directory in `~/.gitconfig`.
+* Local configs are stored inside your repositories in `project/.git/config`.
+
+Configuration from local config overwrites the global configuration that overwrites the system configuration.
+
+To add/modify configuration settings, you can either edit the files directly, or use git `config` command.
+
+Use `$ git config --global user.email "jakub.kulak@gmail.com"` to add/change e-mail address you want to use with your commits.
+
+Switches `--local` (default), `--global`, `--system` will apply changes to appropriate repository.
+
+## Aliases
+
+Config is where you can define your aliases. Alias is a name for a longer command that you might be using more often.
+
+I like to see my git logs with more details, so instead of writing `$ git log --pretty=oneline --abbrev-commit --graph --decorate --date=relative` every time, I have defined an alias for that command in my global config file by writing `$ git config --global alias.lg "log --pretty=oneline --abbrev-commit --graph --decorate --date=relative"`.
+
+Now every time I run `$ git lg` in any of my repositories, I will see the log formatted the way I like it.
+
+Other examples of aliases I'm using, can be found here: [Custom aliases for displaying logs](#https://github.com/jkulak/my-config-files#add-custom-aliases-for-displaying-logs)
 
 # 3. Customise your environment
 
