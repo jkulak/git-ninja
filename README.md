@@ -1,4 +1,14 @@
-Become git ninja
+GIT ninja
+
+# Foreword
+
+After switching from SVN and using git and GitHub for several years, sometimes panicking when I ended up in a detached HEAD state I decided to really understand the tool that I was using. This README.md file is a collection of most important things that I have learned and that allowed me to become fluent in using git. The most important part, that really opened my eyes is how git works under the hood and is described here: [Under the hood](#under-the-hood).
+
+Since it's not a book, nor a tutorial, I try to keep it short and simple, with some paragraphs being only a list of bullet points with most important/interesting/most used things/commands.
+
+Pull requests welcome.
+
+# TOC
 
 1. [What is GIT?](#what-is-git)
 * [Config](#config)
@@ -30,10 +40,13 @@ Become git ninja
 
 # 1. What is GIT?
 
-- git documentation
-- git command documentation
-`git help branch`
-`git help show-ref`
+Git describes itself as "git - the stupid content tracker" (from the `$ man git`). It means that it doesn't do any magic under the hood - it does exactly what **you** tell it to do.
+
+Apart from many excellent git books and tutorials, you can also `$ man git` to read more about it. 
+
+To read about specific command you can `$ man gut show-ref`.
+
+To see a condensed version of the help, with a list of available options for a command, type `$ git reset -h`.
 
 # 2. Config
 
@@ -86,6 +99,9 @@ source ~/.git-completion.bash
 # Under the hood
 
 Git data model.
+
+https://en.wikipedia.org/wiki/Directed_acyclic_graph
+http://eagain.net/articles/git-for-computer-scientists/
 
 .git/refs/heads
 
@@ -176,10 +192,10 @@ Run bisect on 1000 commits to find when the line disappeared.
 
 * `$ git fetch` - to read the data from origin
 
-## merge 
+## merge
 
 * `(master) $ git merge feature` - applies all changes on top of master changes and creates a merge commit* (*depends on --no-ff)
-* `$ git merge --abort` - cancel the merge 
+* `$ git merge --abort` - cancel the merge
 
 ## rebase
 
@@ -205,6 +221,10 @@ Your friend when you are lost (and that can happen often when you are rewriting 
 * `$ git reset --hard HEAD~` - unstage files, clear working tree (deletes files)
 
 - git reset --hard to any commit in any branch to move head there
+
+## revert
+
+...
 
 ## stash
 
