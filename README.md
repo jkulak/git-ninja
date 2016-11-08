@@ -6,13 +6,13 @@ After switching from SVN and using git and GitHub for several years, sometimes p
 
 Since it's not a book, nor a tutorial, I try to keep it short and simple, with some paragraphs being only a list of bullet points with most important/interesting/most used things/commands.
 
-Pull requests welcome.
+Pull requests are welcome.
 
 # TOC
 
-1. [What is GIT?](#what-is-git)
-* [Config](#config)
-* [Customise your environment](#customise-your-environment)
+1. [What is GIT?](#1-what-is-git)
+* [Config](#2-config)
+* [Customise your environment](#3-customise-your-environment)
     * [Your prompt](#customise-your-prompt)
     * [Add custom aliases (for displaying logs)](#add-custom-aliases-for-displaying-logs)
     * [Enable autocompletion](#enable-autocompletion)
@@ -40,13 +40,13 @@ Pull requests welcome.
 
 # 1. What is GIT?
 
-Git describes itself as "git - the stupid content tracker" (from the `$ man git`). It means that it doesn't do any magic under the hood - it does exactly what **you** tell it to do.
+Git describes itself as "git - the stupid content tracker" (from `$ man git`). It means that it doesn't do any magic under the hood - it does exactly what **you** tell it to do.
 
-Apart from many excellent git books and tutorials, you can also `$ man git` to read more about it. 
+Apart from many excellent git books and tutorials, you can always `$ man git` to read more about it.
 
-To read about specific command you can `$ man gut show-ref`.
+To read about a specific command you can `$ man git show-ref`.
 
-To see a condensed version of the help, with a list of available options for a command, type `$ git reset -h`.
+To see a condensed version of the help, with a list of available options for a command, type `$ git reset -h`. Like always, right?
 
 # 2. Config
 
@@ -62,38 +62,23 @@ To add/modify configuration settings, you can either edit the files directly, or
 
 Use `$ git config --global user.email "jakub.kulak@gmail.com"` to add/change e-mail address you want to use with your commits.
 
-Switches `--local` (default), `--global`, `--system` will apply changes to appropriate repository.
+Switches `--local` (default), `--global`, `--system` will apply changes to appropriate scope/config file.
 
 ## Aliases
 
 Config is where you can define your aliases. Alias is a name for a longer command that you might be using more often.
 
-I like to see my git logs with more details, so instead of writing `$ git log --pretty=oneline --abbrev-commit --graph --decorate --date=relative` every time, I have defined an alias for that command in my global config file by writing `$ git config --global alias.lg "log --pretty=oneline --abbrev-commit --graph --decorate --date=relative"`.
+I like to see my git logs with more details, so instead of writing
 
-Now every time I run `$ git lg` in any of my repositories, I will see the log formatted the way I like it.
+`$ git log --pretty=oneline --abbrev-commit --graph --decorate --date=relative`
 
-Other examples of aliases I'm using, can be found here: [Custom aliases for displaying logs](#https://github.com/jkulak/my-config-files#add-custom-aliases-for-displaying-logs)
+every time, I have defined an alias for that command in my global config file by writing
 
-# 3. Customise your environment
+`$ git config --global alias.lg "log --pretty=oneline --abbrev-commit --graph --decorate --date=relative"`
 
-1. Copy and paste the snippet of your choice into the configuration file
-2. If you are updating your bash configuration file, remember to `$ source ~/.bash_profile` for the changes to take effect
+Now, every time I run `$ git lg` in any of my repositories, I will see the log formatted the way I like it.
 
-## Customise your prompt
-
-In your bash configuration file (~/.bash_profile in my case):
-
-```bash
-# You need to download download the file from:
-# https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh
-
-source ~/.git-prompt.sh
-PS1='\u, \W $(__git_ps1 "\e[30;42m(%s)\e[m ")\e[0;35m$\e[m '
-```
-
-## Add custom aliases (for displaying logs)
-
-In your ~/.gitconfig file:
+Other examples of aliases that I'm using (from my `~/.gitconfig` file)
 
 ```bash
 [alias]
@@ -104,16 +89,43 @@ In your ~/.gitconfig file:
     lgf = log --graph --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(bold white)— %an%C(reset)%C(bold yellow)%d%C(reset)' --abbrev-commit --date=relative
 ```
 
-## Enable autocompletion
+Further aliases I'm using, can be found here: [Custom aliases for displaying logs](#https://github.com/jkulak/my-config-files#add-custom-aliases-for-displaying-logs)
 
-In your bash configuration file (~/.bash_profile in my case):
+# 3. Customise your environment
+
+If you are working a lot with git in your command line, it makes sense to make it easier and speed it up a little bit by
+
+1. Customising your shell prompt to show you your current branch
+2. Enabling auto-complete for git commands (and branch names and others)
+
+## Customise your prompt
+
+First, download the official file from: https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh and save it to ~/.git-prompt.sh (or wherever you prefer).
+
+Then, in your bash configuration file (~/.bash_profile in my case) add:
 
 ```bash
-# You need to download download the file from:
-# https://github.com/git/git/blob/master/contrib/completion/git-completion.bash
+source ~/.git-prompt.sh
+PS1='\u, \W $(__git_ps1 "\e[30;42m(%s)\e[m ")\e[0;35m$\e[m '
+```
 
+Remember to `$ source ~/.bash_profile` for the changes to take effect.
+
+Now whenever you navigate to a git repository, you will see additional info in the prompt.
+
+## Enable autocompletion
+
+First, download the official file from: https://github.com/git/git/blob/master/contrib/completion/git-completion.bash and save it to ~/.git-completion.bash (or wherever you prefer).
+
+Then, in your bash configuration file (~/.bash_profile in my case) add:
+
+```bash
 source ~/.git-completion.bash
 ```
+
+Remember to `$ source ~/.bash_profile` for the changes to take effect.
+
+Now, you will be able to use TAB key to auto-complete commands, branch names and others.
 
 # Under the hood
 
