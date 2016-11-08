@@ -1,12 +1,12 @@
-GIT ninja
-
-# Foreword
+# GIT ninja - foreword
 
 After switching from SVN and using git and GitHub for several years, sometimes panicking when I ended up in a detached HEAD state I decided to really understand the tool that I was using. This README.md file is a collection of most important things that I have learned and that allowed me to become fluent in using git. The most important part, that really opened my eyes is how git works under the hood and is described here: [Under the hood](#under-the-hood).
 
 Since it's not a book, nor a tutorial, I try to keep it short and simple, with some paragraphs being only a list of bullet points with most important/interesting/most used things/commands.
 
 Pull requests are welcome.
+
+Btw. I'm only an aspiring git ninja.
 
 # TOC
 
@@ -68,11 +68,11 @@ Switches `--local` (default), `--global`, `--system` will apply changes to appro
 
 Config is where you can define your aliases. Alias is a name for a longer command that you might be using more often.
 
-I like to see my git logs with more details, so instead of writing
+I like to see my git logs with more details, so instead of writing every time
 
 `$ git log --pretty=oneline --abbrev-commit --graph --decorate --date=relative`
 
-every time, I have defined an alias for that command in my global config file by writing
+I have defined an alias for that command in my global config file by writing
 
 `$ git config --global alias.lg "log --pretty=oneline --abbrev-commit --graph --decorate --date=relative"`
 
@@ -127,9 +127,89 @@ Remember to `$ source ~/.bash_profile` for the changes to take effect.
 
 Now, you will be able to use TAB key to auto-complete commands, branch names and others.
 
-# Under the hood
+# 4. Under the hood
 
-Git data model.
+The most important part, that made me understand so many things about git. It's also not as complex as one might think.
+
+## Git data model
+
+Everything git stores, is stored in one of 4 types of objects
+
+* blob: contain file content
+* trees: contain directory structure, file names and point to blobs
+* commits: contain commit info and point to a tree
+* tags: contain tag info and point to a tree
+
+Each object is given a hash identifier (40 characters, SHA-1 hash) that is globally unique (most probably among all repositories in the world).
+
+You can see all the objects in your repository by listing `project/.git/objects`
+
+```bash
+jkulak, git-ninja (master) $ tree .git/objects/
+.git/objects/
+├── 1d
+│   ├── 5e36e2b1e6e9959e0c67829c189634efb4dc29
+│   └── 8fe4c6c9553e8c14c6cd7892086eafe2aaa9e9
+├── 2d
+│   └── 827fd2c6cd0b41f12c9326539e58a8d3604e00
+├── 3c
+│   └── 9dc8e1daa7f979e31682154cc7d2762446afa4
+├── 48
+│   └── 2c83cf5610cb0d5b1c6b5d35b6a3e810f4af29
+├── 50
+│   └── fe676d75a0b3239ab9fd99a108bc6f9fb35130
+[...]
+```
+
+For performance purposes, objects are stored in the directories named with two first characters of their hash, and the rest being the file name of the file.
+
+You know those identifiers from the `$ git log` command that is listing the hashes for commit objects from your repository.
+
+```bash
+jkulak, kitchen-lol-slack-bot (master) $ git log --pretty=oneline
+0a1707f228fef8287d09271d1e07e8d75669f5ff Optimise provisionig time
+8ace349d0ddc0118db0281a30854933c52abe7d8 Use nginx as reverse proxy
+2c8696a9e142d1d14a45eef7bbf61d36009d5193 Remove unofficial cookbook dependecies
+f893e7376abf416e8d99b8f1d9103aef77ff6f4e Store application in users  directory
+7980e3a1de847cc734ec7e0af8d77c5637d83294 Use NFS to mount directories from host
+c6c558ae4ec422b9a10bff1ffc73bfc08aa4e225 Install gulp-cli
+[...]
+```
+
+All objects store by git are compressed by Objects are compressed with zlib, so viewing the file in your editor won't show anything you might be interested in at the moment.
+
+Git offers several low-level commands (also known as plumbing commands - as opposed to porcelain commands - that you are familiar with, like: branch, add, commit, push) to examine stored objects.
+
+Use `$ git cat-file -t d3f732a` to view type of the object (it will be a one of mentioned above four types: blob, tree, commit or tag).
+
+Use `$ git cat-file -p d3f732a` to view the content of the object. For a commit object you will see something like
+
+```bash
+tree ba40ec9f2089afbc1b88c49e60814445c4b916b7
+parent 7ce3c76716758916cb4177fc3cc88fe685dced5e
+author Jakub Kułak <jakub.kulak@gmail.com> 1478149279 -0600
+committer Jakub Kułak <jakub.kulak@gmail.com> 1478149279 -0600
+
+Fill README.md with 👍🏻
+```
+
+* `tree` points to a tree object for that commit (and that tree will point to all other trees and objects for that commit) - see it for yourself.
+* `parent` points to a parent commit for that commit. There might be more than one parent - and then we know it was a merge commit.
+* `author` stores information about user that authored the commit.
+* `committer` stores the information about the user that committed the changes.
+* Last lines contain the commit message.
+
+Check the parent commit content by typing `$ git cat-file -p 7ce3`.
+
+You don't have to use the full hash to access the object. Using first 4 characters is the minimum **if they identify one object**. In most cases, even for big repositories, using 6, 7 first characters is enough.
+
+Another interesting plumbing command is `rev-parse` that will 
+expand the given partial hash to a full hash. Try: `$ git rev-parse 7ce3`
+
+## References
+
+https://git-scm.com/book/en/v2/Git-Internals-Git-References
+
 
 https://en.wikipedia.org/wiki/Directed_acyclic_graph
 http://eagain.net/articles/git-for-computer-scientists/
