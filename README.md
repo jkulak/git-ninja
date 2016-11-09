@@ -8,6 +8,16 @@ Pull requests are welcome.
 
 Btw. I'm only an aspiring git ninja.
 
+## Your background on git
+
+This README.md file assumes a basic understanding of what git is and how it works generally.
+
+It's beyond the scope of this file to give a full coverage of git, so if you're totally new to git, first go through any of these resources before continuing:
+
+* http://rogerdudler.github.io/git-guide/
+* http://tutorialzine.com/2016/06/learn-git-in-30-minutes/
+* https://www.sitepoint.com/git-for-beginners/
+
 # TOC
 
 1. [What is GIT?](#1-what-is-git)
