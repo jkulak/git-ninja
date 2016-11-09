@@ -4,9 +4,7 @@ After switching from SVN and using git and GitHub for several years, sometimes p
 
 Since it's not a book, nor a tutorial, I try to keep it short and simple, with some paragraphs being only a list of bullet points with most important/interesting/most used things/commands.
 
-Pull requests are welcome.
-
-Btw. I'm only an aspiring git ninja.
+Pull requests are welcome (I'm only an aspiring git ninja).
 
 ## Your background on git
 
@@ -27,6 +25,8 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
     * [Add custom aliases (for displaying logs)](#add-custom-aliases-for-displaying-logs)
     * [Enable autocompletion](#enable-autocompletion)
 * [Under the hood](#under-the-hood)
+* [References](#references)
+* [HEAD and heads](#head-and-heads)
 * [Reference shortcuts (HEAD^^)](#reference-shortcuts)
 * [Git file sections](#git-file-sections)
 * [What is](#what-is)
@@ -143,7 +143,10 @@ The most important part, that made me understand so many things about git. It's 
 
 ## Git data model
 
-Everything git stores, is stored in one of 4 types of objects
+[NOTES: https://en.wikipedia.org/wiki/Directed_acyclic_graph
+http://eagain.net/articles/git-for-computer-scientists/]
+
+Everything git stores, is stored in separate object files in `.git/objects` directory as one of 4 types
 
 * blob: contain file content
 * trees: contain directory structure, file names and point to blobs
@@ -152,7 +155,7 @@ Everything git stores, is stored in one of 4 types of objects
 
 Each object is given a hash identifier (40 characters, SHA-1 hash) that is globally unique (most probably among all repositories in the world).
 
-You can see all the objects in your repository by listing `project/.git/objects`
+You can see all the objects in your repository by listing `.git/objects` directory.
 
 ```bash
 jkulak, git-ninja (master) $ tree .git/objects/
@@ -171,12 +174,12 @@ jkulak, git-ninja (master) $ tree .git/objects/
 [...]
 ```
 
-For performance purposes, objects are stored in the directories named with two first characters of their hash, and the rest being the file name of the file.
+For performance purposes, objects are stored in the directories named with two first characters of their hash, and the rest being the filename of the file.
 
-You know those identifiers from the `$ git log` command that is listing the hashes for commit objects from your repository.
+You know those hash identifiers from the `$ git log` command that is listing the hashes for commit objects from your repository.
 
 ```bash
-jkulak, kitchen-lol-slack-bot (master) $ git log --pretty=oneline
+jkulak, kitchen-lol-slack-bot (dockerize) $ git log --pretty=oneline
 0a1707f228fef8287d09271d1e07e8d75669f5ff Optimise provisionig time
 8ace349d0ddc0118db0281a30854933c52abe7d8 Use nginx as reverse proxy
 2c8696a9e142d1d14a45eef7bbf61d36009d5193 Remove unofficial cookbook dependecies
@@ -200,7 +203,7 @@ parent 7ce3c76716758916cb4177fc3cc88fe685dced5e
 author Jakub Kułak <jakub.kulak@gmail.com> 1478149279 -0600
 committer Jakub Kułak <jakub.kulak@gmail.com> 1478149279 -0600
 
-Fill README.md with 👍🏻
+Fill README.md with 👍🏻 and ❤️
 ```
 
 * `tree` points to a tree object for that commit (and that tree will point to all other trees and objects for that commit) - see it for yourself.
@@ -211,48 +214,62 @@ Fill README.md with 👍🏻
 
 Check the parent commit content by typing `$ git cat-file -p 7ce3`.
 
-You don't have to use the full hash to access the object. Using first 4 characters is the minimum **if they identify one object**. In most cases, even for big repositories, using 6, 7 first characters is enough.
+As you see, you don't have to use the full hash to access the object. Using first 4 characters is the minimum **if they unambiguously identify an object**. In most cases, even for big repositories, using 6, 7 first characters is enough.
 
 Another interesting plumbing command is `rev-parse` that will 
-expand the given partial hash to a full hash. Try: `$ git rev-parse 7ce3`
+expand the given partial hash (or) to a full hash. Try: `$ git rev-parse 7ce3` to see how it works.
 
-## References
+# References
 
-https://git-scm.com/book/en/v2/Git-Internals-Git-References
+Remembering long hashes is not an easy task - so using them in your daily work would be challenging. This is why w can use references (refs) in git.
 
+References are easy to remember names that point to a commit hash and can be used interchangeably with hashes. Under the hood, references are text files that store the 40 character hash that identifies (references) a commit.
 
-https://en.wikipedia.org/wiki/Directed_acyclic_graph
-http://eagain.net/articles/git-for-computer-scientists/
+You can see those files by listing the `.git/refs` directory. Try `$ find .git/refs`. There is a git plumbing command for that as well: `$ git show-ref` - that will list all references with their corresponding commit hashes.
 
-.git/refs/heads
+Some references will point to your branches `$ git show-ref | grep heads` or `$ git show-ref --heads`, other reference tags `$ git show-ref --tags` and other your remote branches and tags `$ git show-ref | grep remote`.
 
-How git stores files (objects directory + graph)
-- DAG directed acyclic graph
-- hash, 40 characters, sha-1, globally unique
-- 4 types of files stored in objects (blob, tree, commit, tag)
-- `git cat-file -p d3f732a` to view the commit content
-- `git cat-file -t d3f732a` - to check the type of the object
-- `git rev-parse df4s` - to display the full hash
-- `git rev-parse HEAD~` - to display the full hash
+Thanks to references system we can use branch and tag names with our git commands, like
 
-`git show-ref` - see the list of refs
-`git show-ref | grep tags` - list tags
-`git show-ref | grep heads` - list branches
+* `$ git rev-parse master` - to see the hash of the latest commit in out master branch
+* `$ git cat-file -p my-branch` - to see the content of the latest commit object in the my-branch,
 
-`git show --pretty=raw HEAD`
-`git cat-file -p d3f732a` or HEAD
+# HEAD and heads
 
-(Side note: `$ while :; do clear; ls .git/objects -a; sleep 2; done`)
+HEAD is a reference to the latest commit in currently checked out branch[*]. HEAD is stored in `.git/HEAD` file, view that file's content to see what does it reference. There is/can be only one HEAD at a time!
+
+[*] - there is an exception to that, please check the [detached head](#detached-head) paragraph.
+
+When you list `.git/refs/heads` directory, or run `$ git show-ref --heads` you might see several entries
+
+```bash
+jkulak, inr-api (new-school-deployment) $ git show-ref --heads
+f88023944e7059f4636dd68fd819b514f4819fda refs/heads/develop
+0396959e8e2be4ef255f274589f862755d90cab1 refs/heads/master
+4663e74ce653141d27b9ba92d17f9d9299c91393 refs/heads/new-school-deployment
+```
+
+Those are the heads that are available, and actually, those are the branches that are available in your local repository!
+
+You will get a similar output after running `$ git branch -v`.
+
+While on `new-school-deployment` branch, run `$ git checkout develop` to switch to `develop` branch, what, under the hood, means updating content of `.git/HEAD` file, by changing it's content from `ref: refs/heads/new-school-deployment` to `ref: refs/heads/develop` - now your HEAD points to `refs/heads/develop` which contains hash of the latest commit of `develop` branch. 😃
 
 # Reference shortcuts
 
-* HEAD == "the commit I'm currently sitting"
-* HEAD^ == "this commit's father"
-* HEAD^^ == "this commit's grandfather"
+You might have seen things like `HEAD^`, `HEAD~4` and `master^^`.
+
+Each commit has a parent (or more parents in case it's a merge). To reference the parent commit, you can use `^` or `~` syntax. 
+
+* HEAD == the commit I'm currently sitting in
+* HEAD^ == this commit's father
+* HEAD^^ == this commit's grandfather
+* HEAD^ == HEAD~1 == HEAD~
 * HEAD^^^ == HEAD~3
 * HEAD^^^^^ == HEAD~5
-* HEAD~ == HEAD~1 == HEAD^
 * master^^ == master~2
+* some-branch^^^ == some-branch~3
+* some-tag^^ == some-tag~2
 
 # Git file sections
 
@@ -447,3 +464,25 @@ Creates given number of files with random names, writes 10 lines with random str
 # Additional resources
 
 - Git under the hood: Advanced Git: Graphs, Hashes, and Compression, Oh My! (https://www.youtube.com/watch?v=ig5E8CcdM9g)
+
+==============================================================
+= NOTES 
+==============================================================
+
+How git stores files (objects directory + graph)
+- DAG directed acyclic graph
+- hash, 40 characters, sha-1, globally unique
+- 4 types of files stored in objects (blob, tree, commit, tag)
+- `git cat-file -p d3f732a` to view the commit content
+- `git cat-file -t d3f732a` - to check the type of the object
+- `git rev-parse df4s` - to display the full hash
+- `git rev-parse HEAD~` - to display the full hash
+
+`git show-ref` - see the list of refs
+`git show-ref | grep tags` - list tags
+`git show-ref | grep heads` - list branches
+
+`git show --pretty=raw HEAD`
+`git cat-file -p d3f732a` or HEAD
+
+(Side note: `$ while :; do clear; ls .git/objects -a; sleep 2; done`)
