@@ -473,9 +473,21 @@ https://www.youtube.com/watch?v=to6tIdy5rNc
 - --no-ff
 - pull request (GitHub)
 
-# Prepare your code for commit [not ready]
+# Prepare your code for commit
 
-...
+It's a good practice to follow several rules to make your code meet the project standards and not cause unnecessary confusion in the repository.
+
+Basically -- remove any excessive whitespace and empty lines from your files -- so that they don’t appear as changes in your code.
+
+* remove all trailing whitespace from empty lines
+* merge consecutive empty lines into one
+* make sure last line has an end line character — because every line should have an end line character (so e.g. we don’t see those ugly, red arrow characters in GitHub)
+
+Of course your preferences may vary, so those are just suggestions.
+
+Best if you make your favourite code editor take care of all those points (all the most popular code editors have you covered check out Atom or Sublime Text).
+
+I found it a good solution to have a `.editorconfig` file in your repository (http://editorconfig.org/) that is shared with other contributors, that fixes the crucial configuration for your editors (and is supported by most of the popular editors). An example of a `.editorconfig` file: [https://github.com/babel/babel/blob/master/.editorconfig](https://github.com/babel/babel/blob/master/.editorconfig)
 
 # Great commit messages [not ready]
 
