@@ -468,6 +468,8 @@ Branching strategies?
 
 https://www.youtube.com/watch?v=to6tIdy5rNc
 
+branching model: http://nvie.com/posts/a-successful-git-branching-model/ and adjust to your organisation/environment
+
 - merging
 - rebasing
 - --no-ff
@@ -477,11 +479,11 @@ https://www.youtube.com/watch?v=to6tIdy5rNc
 
 It's a good practice to follow several rules to make your code meet the project standards and not cause unnecessary confusion in the repository.
 
-Basically -- remove any excessive whitespace and empty lines from your files -- so that they don’t appear as changes in your code.
+Basically -- remove any excessive whitespace and empty lines from your files -- so that they don't appear as changes in your code.
 
 * remove all trailing whitespace from empty lines
 * merge consecutive empty lines into one
-* make sure last line has an end line character — because every line should have an end line character (so e.g. we don’t see those ugly, red arrow characters in GitHub)
+* make sure last line has an end line character — because every line should have an end line character (so e.g. we don't see those ugly, red arrow characters in GitHub)
 
 Of course your preferences may vary, so those are just suggestions.
 
@@ -495,25 +497,36 @@ Commit messages should be descriptive and clear. E.g. in case you need to roll b
 
 How often do you see commit messages like
 
-`Now added delete for real` or `Committed some changes`. 
+* `Now added delete for real`
+* `Committed some changes`
+* `Fixed typo, last commit for today`
 
-I would not know if it's ready to be deployed or not, and what were the exact changes (without seriously studying the diff).
+I would not know if it's ready to be deployed or not, and what were the exact changes (without carefully studying the diff).
 
-In your commit message:
+To make it easier for everyone and keep your commit history clean, in your commit messages
 
-* State clearly what has been changed, start your commit messages with a verb in present tense in an imperative form: Add..., Fix..., Remove..., Make..., Configure... (messages like “Advertisement code for category pages” — don’t tell us if it was removed, added or modified — so the message is useless)
-* Make your commit message 50 or less characters long
-* Don’t put period at the end (it’s a title and you don’t put periods at the end of the titles)
-* If your commit message brings extra "why?" question in mind, add extra details in the commit description, by pointing them out
-* You can also point out some technical details in the description if it's necessary
-* If you are working with a ticketing system, add the ticket ID in the beginning of commit message so it integrates nicely with your software (e.g. Jira, Confluence) — this depends on your organisation — so discuss it internally
+* state clearly what has been changed, start your commit messages with a verb in present tense in an imperative form: Add..., Fix..., Remove..., Make..., Configure... (messages like “Advertisement code for category pages” — don't tell us if it was removed, added or modified — so the message is useless)
+* make your commit message 50 or less characters long
+* don't put period at the end (it's a title and you don't put periods at the end of the titles)
+* if your commit message brings extra "why?" question in mind, add extra details in the commit description, by pointing them out
+* you can point out some technical details in the description if it's necessary
+* if you are working with a ticketing system, add the ticket ID in the beginning of commit message so it integrates nicely with your software (e.g. Jira, Confluence) — this depends on your organisation — so discuss it internally!
 
 Go to [http://whatthecommit.com/](http://whatthecommit.com/) and don't use it as an inspiration! 😁
 
-Remember that before pushing, you can also rewrite your commit messages (see `--amend` switch in [commit](#commit) section) and in case of redundant commits (like `Fix typo`) you can squash them into one (see [rebase](#rabse)).
+Remember that before pushing to your remote, you can also rewrite your commit messages (see `--amend` switch in [commit](#commit) section) and in case of redundant commits (like `Fix typo`) you can squash them into one (see [rebase](#rabse)).
 
-# Good practices [not ready]
+# Good practices
 
+Your cooperation model depends heavily on your organisation, so it discuss internally, and don't apply any guidelines and good practices blindly.
+
+* For all changes you want to make, create a separate branch (new feature, bug fix, removing old feature)
+* Squash excessive commits to keep repository's history clean (before pushing your branch make sure there are no unnecessary commits like: `Fix the title typo` or `Forgot to add the dependency`). See the [Great commit messages](#great-commit-messages) chapter.
+* When working with GitHub (GitLab, etc.), use Pull requests or rebase to merge your changes (depending on your working model) into desired branch
+* Don't commit changes not related to you current task/feature (do it rather in a separate branch)
+* Don't commit any debug/test code (`var_dump()`, `console.log()`, etc.) — you could automate this, by setting up a pre-commit hook
+* Stick to coding standards defined for your project... obviously (tabs or spaces, function names, etc.)
+* Have linting implemented in your workflow (with shared/common configuration among your team)
 * When pulling from origin use `$ git pull --rebase` - to put your changes on top of new remote changes
 
 # Do's and don'ts [not ready]
