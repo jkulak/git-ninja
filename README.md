@@ -62,6 +62,8 @@ To read about a specific command you can `$ man git show-ref`.
 
 To see a condensed version of the help, with a list of available options for a command, type `$ git reset -h`. Like always, right?
 
+[🔝 go to table of content](#toc)
+
 # 2. Config
 
 Git stores it's configuration in three places (for different scopes): system (applied to all users on the system), global (applied to all user's repositories) and local (per project).
@@ -182,7 +184,7 @@ Tree with trees and blobs:
 
 Each object is given a hash identifier (40 characters, SHA-1 hash) that is globally unique (most probably among all repositories in the world).
 
-That's why sometimes git is referred to as "a content-addressable filesystem with a VCS user interface written on top of it."
+That's why sometimes git is referred to as "a content-addressable file system with a VCS user interface written on top of it."
 
 You can see all the objects in your repository by listing `.git/objects` directory.
 
@@ -247,7 +249,7 @@ As you see, you don't have to use the full hash to access the object. Using firs
 
 Commit always points to one tree (🔑).
 
-Another interesting plumbing command is `rev-parse` that will expand the given partial hash (or a reference - please see the next chapter) to a full hash. Try: `$ git rev-parse 7ce3` to see how it works.
+Another interesting plumbing command is `rev-parse` that will expand the given partial hash (or a reference - please see the next chapter) to a full hash. Try: `$ git rev-parse 7ce3` to see how it works (use a hash that exists in your repository).
 
 # References
 
@@ -304,7 +306,7 @@ Each commit has a parent (or more parents in case it's a merge). To reference th
 
 ## Git staging area
 
-Staging area (sometimes an old name "index" is still being used) is a virtual list of objects added to the next commit (staged for the next commit).
+Staging area (sometimes an old name "index" is still being used) is a virtual list of objects scheduled for the next commit. You can add files to the staging area and remove them from there if needed. Files in the staging area are _staged for the next commit_.
 
 ## Working tree
 
@@ -324,7 +326,7 @@ It's nothing scary, you are not loosing any files nor commits. Read [what to do 
 
 ## Fast-forward merge
 
-Fast-forward merge doesn't create an extra commit for merging the changes (like GitHub pull request does), and keeps the history linear. 🔩 Under the hood, it means that the head of the branch that we are merging on to is moved to point to the head of the branch that we are merging from.
+Fast-forward merge doesn't create an extra commit for merging the changes (like GitHub pull request does), and keeps the history linear. 🔩 Under the hood, it means that the head of the branch that we are merging on to is simply moved to the head of the branch that we are merging from.
 
 # Commands
 
@@ -335,51 +337,51 @@ Git has two types of commands (reflecting the sanitary nomenclature)
 
 Below I have listed the most popular/useful commands with their most useful usage (and less known tricks/options) in my opinion.
 
-## add
+## add [not ready]
 
 * proper way to add files (better than `add .`)
 * `$ git add -p` (--patch) - interactive add
 
-## bisect
+## bisect [not ready]
 
 Run bisect on 1000 commits to find when the line disappeared.
 
-## branch
+## branch [not ready]
 
 * `$ git branch -a` - include remote branches
 * `$ git branch -v` - verbose, include hashes
 * `$ git branch branch_name` - create a branch
 
-## checkout
+## checkout [not ready]
 
 * checkout with HEAD~4
 * `$ git checkout branch_name` - ...
 * `$ git checkout -b branch_name` - ...
 
-## cherry-pick
+## cherry-pick [not ready]
 
 * `$ git cherry-pick hash` - to copy the commit to current branch
 
-## commit
+## commit [not ready]
 
 * `$ git commit --amend`
 
-## diff
+## diff [not ready]
 
 `git diff --staged` (older alias --cached) staging area <-> HEAD
-`git diff HEAD` - workspace <-> HEAD (all changes from the last commit)
-`git diff` - workspace <-> staging area
+`git diff HEAD` - work tree <-> HEAD (all changes from the last commit)
+`git diff` - work tree <-> staging area
 
-## fetch
+## fetch [not ready]
 
 * `$ git fetch` - to read the data from origin
 
-## merge
+## merge [not ready]
 
 * `(master) $ git merge feature` - applies all changes on top of master changes and creates a merge commit* (*depends on --no-ff)
 * `$ git merge --abort` - cancel the merge
 
-## rebase
+## rebase [not ready]
 
 * `(my_feature) $ git rebase master` - applied all changes from master before feature changes
 
@@ -390,13 +392,13 @@ Run bisect on 1000 commits to find when the line disappeared.
 1. Rebase branch over master
 2. Rebase -i to clean the history
 
-## reflog
+## reflog [not ready]
 
-Your friend when you are lost (and that can happen often when you are rewriting history).
+Reflog is your friend when you are lost (and that can happen often when you are rewriting history).
 
 * `$ git reflog` - to see the list of hashes with the last actions
 
-## reset
+## reset [not ready]
 
 * `$ git reset HEAD~` - unstage files, keep working tree (uses --mixed as default)
 * `$ git reset --soft HEAD~` - keep files staged, keep working tree
@@ -404,62 +406,63 @@ Your friend when you are lost (and that can happen often when you are rewriting 
 
 - git reset --hard to any commit in any branch to move head there
 
-## revert
+## revert [not ready]
 
 ...
 
-## stash
+## stash [not ready]
 
 - stash
 - pop
 - list
 
-# Rerere
+# Rerere [not ready]
 
 * config rerere.enabled true
 * true to reuse recorded resolution (in case there will be many same conflicts while merging)
 
-# Popular use cases
+# Popular use cases [not ready]
 
-## Create a branch from a previous commit
+## Create a branch from a previous commit [not ready]
 
 1. `git checkout HEAD~5` - enter detached head state
 2. make some changes
 3. `git checkout -b new_branch`
 
-# How to undo things
+# How to undo things [not ready]
 
-## Undo last commit
+## Undo last commit [not ready]
 See: [reset](#reset)
 ...
-## Unstage file
+## Unstage file [not ready]
 
 * `$ git reset file_name`
 
-## Unstage everything
+## Unstage everything [not ready]
 
 * `$ git reset`
 
-## Recover deleted file (already staged)
+## Recover deleted file (already staged) [not ready]
 
 1. `$ git reset -- <file>` - this restores the file status in the staging area
 2. `$ git checkout -- <file>` - then check out a copy from the staging area
 
 Use `--` to split commands from parameters
 
-## Recover lost commit
+## Recover lost commit [not ready]
 
 1. `$ git reflog` - to see the list of hashes with last actions
 * `$ git checkout hash` - to look around if that's what you need (enters detached HEAD state)
 * `$ git checkout my_branch` - to move to the branch you want to fix
 * `$ git reset --hard hash` - to move it to the desirable state
 
-# Handy commands
+# Handy commands [not ready]
 
 * `$ git checkout -` - checkout last used branch
-* `$ git grep keyword` - greps directory returning results with searched keyword, ignores files in your _.gitignore_ by default
+* `$ git grep keyword` - greps directory returning results with searched keyword, ignores files in your `.gitignore` by default
+* `$ git shortlog -sne` - show number of commits per person with their e-mail address
 
-# Git workflows
+# Git workflows [not ready]
 
 Branching strategies?
 
@@ -470,30 +473,29 @@ https://www.youtube.com/watch?v=to6tIdy5rNc
 - --no-ff
 - pull request (GitHub)
 
-# Prepare your code for commit
+# Prepare your code for commit [not ready]
 
 ...
 
-# Great commit messages
+# Great commit messages [not ready]
 
 ...
 
-# Good practices
+# Good practices [not ready]
 
 * When pulling from origin use `$ git pull --rebase` - to put your changes on top of new remote changes
 
-# Do's and don'ts
+# Do's and don'ts [not ready]
 
 - don't rebase master?
 - don't rewrite published history
 - don't force push (`git push -f`) unless you know _exactly_ what you are doing!
 
-# Aaah moments
+# My oh! moments [not ready]
 
-- branch is simply a text file that contains in plain text the name of the commit it points to -  branch is just a label
-- it's not a sequence of commits, but every commit has a parent
+* branch is simply a text file that contains in plain text the name of the commit it points to -  branch is just a label
 
-# Scripts
+# Scripts [not ready]
 
 Scripts are located in `scripts` directory. Use them to initiate fake repositories to practice git commands.
 
@@ -501,11 +503,11 @@ Scripts are located in `scripts` directory. Use them to initiate fake repositori
 
 Creates given number of files with random names, writes 10 lines with random strings to each and creates a commit for each file. Usage: `./create-commits.sh 20`
 
-# Extra facts
+# Extra facts [not ready]
 
 * You can merge from multiple branches, and the merge is called octomerge - this is where the GitHub logo (octocat, previously known as not so corporate friendly octopuss) comes from that name.
 
-# Additional resources
+# Additional resources [not ready]
 
 - Git under the hood: Advanced Git: Graphs, Hashes, and Compression, Oh My! (https://www.youtube.com/watch?v=ig5E8CcdM9g)
 
@@ -521,10 +523,6 @@ How git stores files (objects directory + graph)
 - `git cat-file -t d3f732a` - to check the type of the object
 - `git rev-parse df4s` - to display the full hash
 - `git rev-parse HEAD~` - to display the full hash
-
-`git show-ref` - see the list of refs
-`git show-ref | grep tags` - list tags
-`git show-ref | grep heads` - list branches
 
 `git show --pretty=raw HEAD`
 `git cat-file -p d3f732a` or HEAD
