@@ -2,7 +2,9 @@
 
 Since I'm only an aspiring git ninja - pull requests are welcome!
 
-After switching from SVN and using git and GitHub for several years, sometimes panicking when I ended up in a detached HEAD state I decided to really understand the tool that I was using. This README.md file is a collection of most important things that I have learned and that allowed me to feel comfortable using git. The most important part, that really opened my eyes is how git works under the hood and I have described it here: [Under the hood](#under-the-hood).
+After switching from SVN and using git and GitHub for several years, sometimes panicking when I ended up in a detached HEAD state I decided to thoroughly understand the tool I was using. This README.md file is a collection of most important things that I have learned and that allowed me to feel comfortable using git.
+
+The most important part, that really opened my eyes is how git works 🔩 under the hood and I have described it here: [Under the hood](#under-the-hood).
 
 Since it's not a book, nor a tutorial, I try to keep it short and simple, with some chapters being only a list of bullet points with most important/interesting/most used things/commands.
 
@@ -52,7 +54,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
 
 # 1. What is GIT?
 
-Git describes itself as "git - the stupid content tracker" (from `$ man git`). It means that it doesn't do any magic under the hood - it does exactly what **you** tell it to do.
+Git describes itself as "git - the stupid content tracker" (from `$ man git`). It means that it doesn't do any magic 🔩 under the hood - it does exactly what **you** tell it to do.
 
 Apart from many excellent git books and tutorials, you can always `$ man git` to read more about it.
 
@@ -251,7 +253,7 @@ Another interesting plumbing command is `rev-parse` that will expand the given p
 
 Remembering long hashes is not an easy task - so using them in your daily work would be challenging. This is why w can use references (refs) in git.
 
-References are easy to remember names that point to a commit hash and can be used interchangeably with hashes. Under the hood, references are text files that store the 40 character hash that identifies (references) a commit.
+References are easy to remember names that point to a commit hash and can be used interchangeably with hashes. 🔩 Under the hood, references are text files that store the 40 character hash that identifies (references) a commit.
 
 You can see those files by listing the `.git/refs` directory. Try `$ find .git/refs`. There is a git plumbing command for that as well: `$ git show-ref` - that will list all references with their corresponding commit hashes.
 
@@ -281,7 +283,7 @@ Those are the heads that are available, and actually, those are the branches tha
 
 You will get a similar output after running `$ git branch -v`.
 
-While on `new-school-deployment` branch, run `$ git checkout develop` to switch to `develop` branch, what, under the hood, means updating content of `.git/HEAD` file, by changing it's content from `ref: refs/heads/new-school-deployment` to `ref: refs/heads/develop` - now your HEAD points to `refs/heads/develop` which contains hash of the latest commit of `develop` branch. 😃
+While on `new-school-deployment` branch, run `$ git checkout develop` to switch to `develop` branch. 🔩 Under the hood it means updating content of `.git/HEAD` file, by changing it's content from `ref: refs/heads/new-school-deployment` to `ref: refs/heads/develop` - now your HEAD points to `refs/heads/develop` which contains hash of the latest commit of `develop` branch. 😃
 
 # Reference shortcuts
 
@@ -316,13 +318,13 @@ Detached HEAD happens, when you move to a place in your repository that is not t
 
 This can happen, for example, when you execute `$ git checkout cd924da` (or `$ git checkout HEAD~2` - which will switch to your working tree from two commits ago). Simply, when you checkout any commit that is not a head of any existing branch.
 
-Under the hood (🔩), it means that the main HEAD (`.git/HEAD`) is not referencing any of the existing heads in the project (`$ git show-ref --heads`) and therefore is detached 😬.
+🔩 Under the hood, it means that the main HEAD (`.git/HEAD`) is not referencing any of the existing heads in the project (`$ git show-ref --heads`) and therefore is detached 😬.
 
 It's nothing scary, you are not loosing any files nor commits. Read [what to do when you find yourself in the detached head state](#detached-head-state).
 
 ## Fast-forward merge
 
-Fast-forward merge doesn't create an extra commit for merging the changes (like GitHub pull request does), and keeps the history linear. Under the hood (🔩), it means that the head of the branch that we are merging on to is moved to point to the head of the branch that we are merging from.
+Fast-forward merge doesn't create an extra commit for merging the changes (like GitHub pull request does), and keeps the history linear. 🔩 Under the hood, it means that the head of the branch that we are merging on to is moved to point to the head of the branch that we are merging from.
 
 # Commands
 
