@@ -1,10 +1,12 @@
 # GIT ninja - foreword
 
-After switching from SVN and using git and GitHub for several years, sometimes panicking when I ended up in a detached HEAD state I decided to really understand the tool that I was using. This README.md file is a collection of most important things that I have learned and that allowed me to become fluent in using git. The most important part, that really opened my eyes is how git works under the hood and is described here: [Under the hood](#under-the-hood).
+Since I'm only an aspiring git ninja - pull requests are welcome!
 
-Since it's not a book, nor a tutorial, I try to keep it short and simple, with some paragraphs being only a list of bullet points with most important/interesting/most used things/commands.
+After switching from SVN and using git and GitHub for several years, sometimes panicking when I ended up in a detached HEAD state I decided to really understand the tool that I was using. This README.md file is a collection of most important things that I have learned and that allowed me to feel comfortable using git. The most important part, that really opened my eyes is how git works under the hood and I have described it here: [Under the hood](#under-the-hood).
 
-Pull requests are welcome (I'm only an aspiring git ninja).
+Since it's not a book, nor a tutorial, I try to keep it short and simple, with some chapters being only a list of bullet points with most important/interesting/most used things/commands.
+
+I marked the most important things (and my Oh! moments with the key emoji 🔑 for easy search).
 
 ## Your background on git
 
@@ -105,8 +107,8 @@ Further aliases I'm using, can be found here: [Custom aliases for displaying log
 
 If you are working a lot with git in your command line, it makes sense to make it easier and speed it up a little bit by
 
-1. Customising your shell prompt to show you your current branch
-2. Enabling auto-complete for git commands (and branch names and others)
+1. customising your shell prompt to show you your current branch,
+2. enabling auto-complete for git commands (and branch names and others).
 
 ## Customise your prompt
 
@@ -146,14 +148,39 @@ The most important part, that made me understand so many things about git. It's 
 [NOTES: https://en.wikipedia.org/wiki/Directed_acyclic_graph
 http://eagain.net/articles/git-for-computer-scientists/]
 
-Everything git stores, is stored in separate object files in `.git/objects` directory as one of 4 types
+Internally, all files and directories in git project are stored in separate object files in `.git/objects` directory as one of 4 types
 
-* blob: contain file content
-* trees: contain directory structure, file names and point to blobs
-* commits: contain commit info and point to a tree
-* tags: contain tag info and point to a tree
+* blob: contains file content
+* tree: contains directory structure, file names and hashes of blobs (simply, think of it just like a directory listing with files and directories). Top level tree is called a "working tree"
+* commit: contains commit info and points to a tree
+* tag: contains tag info and points to a tree
+
+Tree with trees and blobs:
+
+```bash
+. (tree)
+├── Dockerfile (blob)
+├── README.md (blob)
+├── app.js (blob)
+├── dist (tree)
+│   └── assets (tree)
+│       ├── css (tree)
+│       │   ├── main.css (blob)
+│       │   └── main.min.css (blob)
+│       └── img (tree)
+│           └── lol-logo.png (blob)
+├── favicon.ico (blob)
+├── gulpfile.js (blob)
+├── lib (tree)
+│   ├── config (tree)
+│   │   ├── config.js (blob)
+│   │   └── config.js.example (blob)
+[...]
+```
 
 Each object is given a hash identifier (40 characters, SHA-1 hash) that is globally unique (most probably among all repositories in the world).
+
+That's why sometimes git is referred to as "a content-addressable filesystem with a VCS user interface written on top of it."
 
 You can see all the objects in your repository by listing `.git/objects` directory.
 
@@ -206,7 +233,7 @@ committer Jakub Kułak <jakub.kulak@gmail.com> 1478149279 -0600
 Fill README.md with 👍🏻 and ❤️
 ```
 
-* `tree` points to a tree object for that commit (and that tree will point to all other trees and objects for that commit) - see it for yourself.
+* `tree` points to a tree object for that commit (and that tree will point to all other trees and objects for that commit).
 * `parent` points to a parent commit for that commit. There might be more than one parent - and then we know it was a merge commit.
 * `author` stores information about user that authored the commit.
 * `committer` stores the information about the user that committed the changes.
@@ -214,10 +241,11 @@ Fill README.md with 👍🏻 and ❤️
 
 Check the parent commit content by typing `$ git cat-file -p 7ce3`.
 
-As you see, you don't have to use the full hash to access the object. Using first 4 characters is the minimum **if they unambiguously identify an object**. In most cases, even for big repositories, using 6, 7 first characters is enough.
+As you see, you don't have to use the full hash to access the object. Using first 4 characters is the minimum **if they unambiguously identify an object**. Most git commands show the hash shortened to 7 characters - so I assume that's the safe length for most repositories.
 
-Another interesting plumbing command is `rev-parse` that will 
-expand the given partial hash (or) to a full hash. Try: `$ git rev-parse 7ce3` to see how it works.
+Commit always points to one tree (🔑).
+
+Another interesting plumbing command is `rev-parse` that will expand the given partial hash (or a reference - please see the next chapter) to a full hash. Try: `$ git rev-parse 7ce3` to see how it works.
 
 # References
 
@@ -229,16 +257,16 @@ You can see those files by listing the `.git/refs` directory. Try `$ find .git/r
 
 Some references will point to your branches `$ git show-ref | grep heads` or `$ git show-ref --heads`, other reference tags `$ git show-ref --tags` and other your remote branches and tags `$ git show-ref | grep remote`.
 
-Thanks to references system we can use branch and tag names with our git commands, like
+Thanks to references system we can use branch and tag names with git commands, like
 
-* `$ git rev-parse master` - to see the hash of the latest commit in out master branch
-* `$ git cat-file -p my-branch` - to see the content of the latest commit object in the my-branch,
+* `$ git rev-parse master` - to see the hash of the latest commit in master branch
+* `$ git cat-file -p my-branch` - to see the content of the latest commit object in my-branch
 
 # HEAD and heads
 
 HEAD is a reference to the latest commit in currently checked out branch[*]. HEAD is stored in `.git/HEAD` file, view that file's content to see what does it reference. There is/can be only one HEAD at a time!
 
-[*] - there is an exception to that, please check the [detached head](#detached-head) paragraph.
+[*] - there is an exception to that, please check the [detached head](#detached-head) chapter.
 
 When you list `.git/refs/heads` directory, or run `$ git show-ref --heads` you might see several entries
 
@@ -264,32 +292,46 @@ Each commit has a parent (or more parents in case it's a merge). To reference th
 * HEAD == the commit I'm currently sitting in
 * HEAD^ == this commit's father
 * HEAD^^ == this commit's grandfather
-* HEAD^ == HEAD~1 == HEAD~
-* HEAD^^^ == HEAD~3
+* HEAD^ == HEAD~1 == HEAD~ (🔑)
 * HEAD^^^^^ == HEAD~5
-* master^^ == master~2
-* some-branch^^^ == some-branch~3
+* master^ == master~
 * some-tag^^ == some-tag~2
+* some-branch^^^ == some-branch~3
 
-# Git file sections
+# What is a...
 
-File stages (working trees, staged, committed, pushed)
+## Git staging area
 
-It's a working tree, because it's a *tree*  and it's your current working area.
+Staging area (sometimes an old name "index" is still being used) is a virtual list of objects added to the next commit (staged for the next commit).
 
-Index (old name) = Staging area
+## Working tree
 
-# What is
+The working tree means all directories and files in your project in their current state. The top level tree (directory) that points to all directories and files it contains and so on. It is the current state of the files and directories after the last commit and your changes. Working tree can have files that are untracked (new files), staged (after you executed `add` command on them), committed (everything you committed) and pushed.
+
+Files that are staged (added to the next commit), are still a part of your working tree. (🔑)
 
 ## Detached HEAD
 
-...
+Detached HEAD happens, when you move to a place in your repository that is not the latest commit of any of the existing branches.
 
-## Fast-forward
+This can happen, for example, when you execute `$ git checkout cd924da` (or `$ git checkout HEAD~2` - which will switch to your working tree from two commits ago). Simply, when you checkout any commit that is not a head of any existing branch.
 
-Fast-forward merge doesn't create extra commit for merging the changes (like GitHub pull request does), and keeps the history linear.
+Under the hood (🔩), it means that the main HEAD (`.git/HEAD`) is not referencing any of the existing heads in the project (`$ git show-ref --heads`) and therefore is detached 😬.
+
+It's nothing scary, you are not loosing any files nor commits. Read [what to do when you find yourself in the detached head state](#detached-head-state).
+
+## Fast-forward merge
+
+Fast-forward merge doesn't create an extra commit for merging the changes (like GitHub pull request does), and keeps the history linear. Under the hood (🔩), it means that the head of the branch that we are merging on to is moved to point to the head of the branch that we are merging from.
 
 # Commands
+
+Git has two types of commands (reflecting the sanitary nomenclature)
+
+1. plumbing - the low-level commands, that can directly manipulate the repository - that you would usually not use in your daily workflow
+2. porcelain - the high-level user interface commands that make using git a breeze (kind of 😀).
+
+Below I have listed the most popular/useful commands with their most useful usage (and less known tricks/options) in my opinion.
 
 ## add
 
