@@ -489,9 +489,28 @@ Best if you make your favourite code editor take care of all those points (all t
 
 I found it a good solution to have a `.editorconfig` file in your repository (http://editorconfig.org/) that is shared with other contributors, that fixes the crucial configuration for your editors (and is supported by most of the popular editors). An example of a `.editorconfig` file: [https://github.com/babel/babel/blob/master/.editorconfig](https://github.com/babel/babel/blob/master/.editorconfig)
 
-# Great commit messages [not ready]
+# Great commit messages
 
-...
+Commit messages should be descriptive and clear. E.g. in case you need to roll back changes from production quickly — you want to be able to quickly understand up to which commit you want to roll back.
+
+How often do you see commit messages like
+
+`Now added delete for real` or `Committed some changes`. 
+
+I would not know if it's ready to be deployed or not, and what were the exact changes (without seriously studying the diff).
+
+In your commit message:
+
+* State clearly what has been changed, start your commit messages with a verb in present tense in an imperative form: Add..., Fix..., Remove..., Make..., Configure... (messages like “Advertisement code for category pages” — don’t tell us if it was removed, added or modified — so the message is useless)
+* Make your commit message 50 or less characters long
+* Don’t put period at the end (it’s a title and you don’t put periods at the end of the titles)
+* If your commit message brings extra "why?" question in mind, add extra details in the commit description, by pointing them out
+* You can also point out some technical details in the description if it's necessary
+* If you are working with a ticketing system, add the ticket ID in the beginning of commit message so it integrates nicely with your software (e.g. Jira, Confluence) — this depends on your organisation — so discuss it internally
+
+Go to [http://whatthecommit.com/](http://whatthecommit.com/) and don't use it as an inspiration! 😁
+
+Remember that before pushing, you can also rewrite your commit messages (see `--amend` switch in [commit](#commit) section) and in case of redundant commits (like `Fix typo`) you can squash them into one (see [rebase](#rabse)).
 
 # Good practices [not ready]
 
