@@ -36,6 +36,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
 * [What is](#what-is)
     * [Detached HEAD](#detached-head)
 * [Commands](#commands)
+    * [add](#add)
     * [checkout](#checkout)
 * [Rerere](#rerere)
 * [Popular use cases](#popular-use-cases)
@@ -80,6 +81,8 @@ Use `$ git config --global user.email "jakub.kulak@gmail.com"` to add/change e-m
 
 Switches `--local` (default), `--global`, `--system` will apply changes to appropriate scope/config file.
 
+[🔝 go to table of content](#toc)
+
 ## Aliases
 
 Config is where you can define your aliases. Alias is a name for a longer command that you might be using more often.
@@ -106,6 +109,8 @@ Other examples of aliases that I'm using (from my `~/.gitconfig` file)
 ```
 
 Further aliases I'm using, can be found here: [Custom aliases for displaying logs](#https://github.com/jkulak/my-config-files#add-custom-aliases-for-displaying-logs)
+
+[🔝 go to table of content](#toc)
 
 # 3. Customise your environment
 
@@ -143,6 +148,8 @@ Remember to `$ source ~/.bash_profile` for the changes to take effect.
 
 Now, you will be able to use TAB key to auto-complete commands, branch names and others.
 
+[🔝 go to table of content](#toc)
+
 # 4. Under the hood
 
 The most important part, that made me understand so many things about git. It's also not as complex as one might think.
@@ -159,7 +166,7 @@ Internally, all files and directories in git project are stored in separate obje
 * commit: contains commit info and points to a tree
 * tag: contains tag info and points to a tree
 
-Tree with trees and blobs:
+A tree with other trees and blobs:
 
 ```bash
 . (tree)
@@ -251,6 +258,8 @@ Commit always points to one tree (🔑).
 
 Another interesting plumbing command is `rev-parse` that will expand the given partial hash (or a reference - please see the next chapter) to a full hash. Try: `$ git rev-parse 7ce3` to see how it works (use a hash that exists in your repository).
 
+[🔝 go to table of content](#toc)
+
 # References
 
 Remembering long hashes is not an easy task - so using them in your daily work would be challenging. This is why w can use references (refs) in git.
@@ -266,11 +275,13 @@ Thanks to references system we can use branch and tag names with git commands, l
 * `$ git rev-parse master` - to see the hash of the latest commit in master branch
 * `$ git cat-file -p my-branch` - to see the content of the latest commit object in my-branch
 
+[🔝 go to table of content](#toc)
+
 # HEAD and heads
 
 HEAD is a reference to the latest commit in currently checked out branch[*]. HEAD is stored in `.git/HEAD` file, view that file's content to see what does it reference. There is/can be only one HEAD at a time!
 
-[*] - there is an exception to that, please check the [detached head](#detached-head) chapter.
+[*] — there is an exception to that, please check the [detached head](#detached-head) chapter.
 
 When you list `.git/refs/heads` directory, or run `$ git show-ref --heads` you might see several entries
 
@@ -287,6 +298,8 @@ You will get a similar output after running `$ git branch -v`.
 
 While on `new-school-deployment` branch, run `$ git checkout develop` to switch to `develop` branch. 🔩 Under the hood it means updating content of `.git/HEAD` file, by changing it's content from `ref: refs/heads/new-school-deployment` to `ref: refs/heads/develop` - now your HEAD points to `refs/heads/develop` which contains hash of the latest commit of `develop` branch. 😃
 
+[🔝 go to table of content](#toc)
+
 # Reference shortcuts
 
 You might have seen things like `HEAD^`, `HEAD~4` and `master^^`.
@@ -302,11 +315,13 @@ Each commit has a parent (or more parents in case it's a merge). To reference th
 * some-tag^^ == some-tag~2
 * some-branch^^^ == some-branch~3
 
+[🔝 go to table of content](#toc)
+
 # What is a...
 
 ## Git staging area
 
-Staging area (sometimes an old name "index" is still being used) is a virtual list of objects scheduled for the next commit. You can add files to the staging area and remove them from there if needed. Files in the staging area are _staged for the next commit_.
+Staging area (sometimes an old name "index" is still being used) is a virtual list of objects scheduled for the next commit. It's a snapshot of a working tree that will be used when you perform `commit` command. You can add files to the staging area and remove them from there if needed. Files in the staging area are _staged for the next commit_.
 
 ## Working tree
 
@@ -318,7 +333,7 @@ Files that are staged (added to the next commit), are still a part of your worki
 
 Detached HEAD happens, when you move to a place in your repository that is not the latest commit of any of the existing branches.
 
-This can happen, for example, when you execute `$ git checkout cd924da` (or `$ git checkout HEAD~2` - which will switch to your working tree from two commits ago). Simply, when you checkout any commit that is not a head of any existing branch.
+This can happen, for example, when you execute `$ git checkout cd924da` (or `$ git checkout HEAD~2` — which will switch to the working tree from two commits ago). Simply, when you checkout any commit that is not a head of any existing branch.
 
 🔩 Under the hood, it means that the main HEAD (`.git/HEAD`) is not referencing any of the existing heads in the project (`$ git show-ref --heads`) and therefore is detached 😬.
 
@@ -332,15 +347,26 @@ Fast-forward merge doesn't create an extra commit for merging the changes (like 
 
 Git has two types of commands (reflecting the sanitary nomenclature)
 
-1. plumbing - the low-level commands, that can directly manipulate the repository - that you would usually not use in your daily workflow
-2. porcelain - the high-level user interface commands that make using git a breeze (kind of 😀).
+1. plumbing — the low-level commands, that can directly manipulate the repository - that you would usually not use in your daily workflow
+2. porcelain — the high-level user interface commands that make using git a breeze (kind of 😀).
+
+Most of the commands will accept several universal parameters, like
+*  `-v` (`--verbose`) — make the output more detailed (interesting to see how things work under the hood)
+*  `-n` (`--dry-run`) — simulate command run, show the output, but don't make any changes
+*  `-f` (`--force`) — potential a dangerous one if you are not 100% what you are doing and how to use it. Always consult a more experience colleague before "forcing" any of the commands on common repositories
 
 Below I have listed the most popular/useful commands with their most useful usage (and less known tricks/options) in my opinion.
 
-## add [not ready]
+## add
 
-* proper way to add files (better than `add .`)
-* `$ git add -p` (--patch) - interactive add
+Adds files from your working tree to the staging area (in other words, makes a snapshot of selected files/changes in your working tree to be used with the next commit).
+
+* `$ git add .` — add all files from the current directory in the working tree to the staging area (stage all files from the working tree). Using `$ git add *` for that purpose skips files that names being with a dot (and usually you don't want to skip those, and if you do - put them in the `.gitignore` file).
+* `$ git add -p` (`--patch`) — review every change made in files, and if needed stage only parts of the file. Apart from making sure your changes are what you actually want to commit, it also lets you see if,  by accident, you are not staging any `console.log()` or `var_dump()` statements (if you don't have hooks set up to do it for you).
+
+There are other parameters to tweak the behaviour of `add` command, like `-u` (`--update`) to only add files that area already tracked. To learn more, try `$ man git-add`.
+
+[🔝 go to table of content](#toc)
 
 ## bisect [not ready]
 
@@ -348,19 +374,19 @@ Run bisect on 1000 commits to find when the line disappeared.
 
 ## branch [not ready]
 
-* `$ git branch -a` - include remote branches
-* `$ git branch -v` - verbose, include hashes
-* `$ git branch branch_name` - create a branch
+* `$ git branch -a` — include remote branches
+* `$ git branch -v` — verbose, include hashes
+* `$ git branch branch_name` — create a branch
 
 ## checkout [not ready]
 
 * checkout with HEAD~4
-* `$ git checkout branch_name` - ...
-* `$ git checkout -b branch_name` - ...
+* `$ git checkout branch_name` — ...
+* `$ git checkout -b branch_name` — ...
 
 ## cherry-pick [not ready]
 
-* `$ git cherry-pick hash` - to copy the commit to current branch
+* `$ git cherry-pick hash` — to copy the commit to current branch
 
 ## commit [not ready]
 
@@ -399,6 +425,8 @@ Reflog is your friend when you are lost (and that can happen often when you are 
 * `$ git reflog` - to see the list of hashes with the last actions
 
 ## reset [not ready]
+
+git reset -p
 
 * `$ git reset HEAD~` - unstage files, keep working tree (uses --mixed as default)
 * `$ git reset --soft HEAD~` - keep files staged, keep working tree
@@ -467,8 +495,8 @@ Use `--` to split commands from parameters
 Branching strategies?
 
 https://www.youtube.com/watch?v=to6tIdy5rNc
-
-branching model: http://nvie.com/posts/a-successful-git-branching-model/ and adjust to your organisation/environment
+https://sandofsky.com/blog/git-workflow.html
+http://nvie.com/posts/a-successful-git-branching-model/
 
 - merging
 - rebasing
