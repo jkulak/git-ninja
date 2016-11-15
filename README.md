@@ -37,6 +37,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
     * [Detached HEAD](#detached-head)
 * [Commands](#commands)
     * [add](#add)
+    * [bisect](#bisect)
     * [checkout](#checkout)
 * [Rerere](#rerere)
 * [Popular use cases](#popular-use-cases)
@@ -368,9 +369,41 @@ There are other parameters to tweak the behaviour of `add` command, like `-u` (`
 
 [🔝 go to table of content](#toc)
 
-## bisect [not ready]
+## bisect
 
-Run bisect on 1000 commits to find when the line disappeared.
+Bisect helps you easily find a commit where a particular change (maybe a bug?) was introduced. It's definitely helpful when working with big repositories with thousands of commits. It simply splits the provided range of commits (can be a whole history), divides it in two, and asks you to confirm if the current commit in the middle contains the change (`$ git bisect bad`) or not (`$ git bisect good`). After your answer, the range is being narrowed down and the step is repeated until you find the commit you are looking for. It's called bisect because it's using [binary search algorithm](https://en.wikipedia.org/wiki/Binary_search_algorithm)
+
+How to perform a bisect search?
+
+1. `$ git bisect start` or `$ git bisect start master 3fff687`
+2. `$ git bisect bad` — to mark current commit as bad (you need to set at least one commit as bad — can be an older one — for the search to make sense — otherwise there wouldn't be any bad commits to compare to)
+3. `$ git bisect good v1.1.3` — to mark one of the commits (tags) as good, this is optional, if you don't do it, the bisect will start from the very first commit 
+4. `$ git bisect next` — to continue the bisect search, git-bisect will switch to the commit in the middle of the range, and will wait for you to perform either `$ git bisect good` — to mark the commit as good, or  `$ git bisect bad` — to mark the commit as bad and to repeat the step 4) until you find the commit that introduced the change you were looking for.
+
+You can automate the testing process by providing the `bisect` command with a shell script that will check if the change is present or not.
+
+You can try bisecting on any repository without worrying about making undesirable changes. When you find yourself lost, just type `$ git bisect reset` to leave the bisecting mode and return where you started.
+
+To perform a test `bisect`, you can clone the `npm/npm` repository from GitHub (for example) and using the `scripts/bisect-test.sh` script from this repository check when the given file was created.
+
+```bash
+# copy the bisect-text.sh script to the working tree
+$ git bisect start master e790c85a061
+$ git bisect run ./bisect-test.sh
+```
+
+And after couple of seconds, you will get
+
+```bash
+jkulak, npm ((3fff687...)|BISECTING) $ git bisect run ./bisect-test.sh
+running ./bisect-test.sh
+[...]
+Running the bisect testing script...
+✅ File not found!
+0019443e4b4e19b3213ac1edf14b8f483e86583d is the first bad commit
+```
+
+And now you know, that the commit `0019443` was when the file was added to the repository.
 
 ## branch [not ready]
 
@@ -526,7 +559,7 @@ Commit messages should be descriptive and clear. E.g. in case you need to roll b
 How often do you see commit messages like
 
 * `Now added delete for real`
-* `Committed some changes`
+* `Sometimes when split cookie, cookie not want get split. Make sure cookie edible before bite! OOMMNOMNOMnoMnoMNoMNOmNOMoNMNOM!!!!` - this one is actually taken from npm's repository 😬
 * `Fixed typo, last commit for today`
 
 I would not know if it's ready to be deployed or not, and what were the exact changes (without carefully studying the diff).
