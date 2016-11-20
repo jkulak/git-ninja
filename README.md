@@ -34,6 +34,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
 * [References](#references)
 * [HEAD and heads](#head-and-heads)
 * [Reference shortcuts (HEAD^^)](#reference-shortcuts)
+* [Specifying revisions](#specifying-revisions)
 * [Git file sections](#git-file-sections)
 * [What is](#what-is)
     * [Detached HEAD](#detached-head)
@@ -320,7 +321,16 @@ Each commit has a parent (or more parents in case it's a merge). To reference th
 * some-tag^^ == some-tag~2
 * some-branch^^^ == some-branch~3
 
+Check out https://www.kernel.org/pub/software/scm/git/docs/gitrevisions.html (or `$ man girevisions`) to learn more (all EVERYTHING!!!).
+
 [🔝 go to table of content](#toc)
+
+# Specifying revisions
+
+...
+@ alone stands for HEAD
+
+[NOTE: https://www.kernel.org/pub/software/scm/git/docs/gitrevisions.html]
 
 # What is a...
 
@@ -338,7 +348,7 @@ Staging area (sometimes an old name "index" is still being used) is a virtual li
 
 The working tree means all directories and files in your project in their current state. The top level tree (directory) that points to all directories and files it contains and so on. It is the current state of the files and directories after the last commit and your changes. Working tree can have files that are untracked (new files), staged (after you executed `add` command on them), committed (everything you committed) and pushed.
 
-Files that are staged (added to the next commit), are still a part of your working tree. (🔑)
+Files that are staged (added to the next commit), are still a part of the working tree. (🔑)
 
 ## Detached HEAD
 
@@ -354,6 +364,10 @@ It's nothing scary, you are not loosing any files nor commits. Read [what to do 
 
 Fast-forward merge doesn't create an extra commit for merging the changes (like GitHub pull request does), and keeps the history linear. 🔩 Under the hood, it means that the head of the branch that we are merging on to is simply moved to the head of the branch that we are merging from.
 
+## commit-ish (tree-ish)
+
+...
+
 # Commands
 
 Git has two types of commands (reflecting the sanitary nomenclature)
@@ -366,6 +380,7 @@ Most of the commands will accept several universal options, like
 *  `-v` (`--verbose`) - make the output more detailed (interesting to see how things work under the hood)
 *  `-n` (`--dry-run`) - simulate command run, show the output, but don't make any changes
 *  `-f` (`--force`) - potential a dangerous one if you are not 100% what you are doing and how to use it. Always consult a more experience colleague before "forcing" any of the commands on common repositories
+*  `-q` (`--quiet`) - quiet mode, surpress feedback (non-error) messages
 
 Often, using a capital letter as an option will mean forcing that option. I.e. `$ git branch -D <branch_name>` is same as `$ git branch -d --force <branch_name>`.
 
@@ -420,7 +435,7 @@ And now you know, that the commit `0019443` was when the file was added to the r
 
 ## branch
 
-Git branch can work with single branch of all branches - depending if you supply a branch name as an argument.
+Git branch can work with single branch or all branches - depending if you supply a branch name as an argument.
 
 The most popular uses, without giving it a particular branch are
 
@@ -431,30 +446,20 @@ The most popular uses, without giving it a particular branch are
 The most popular, branch specific uses include
 
 * `$ git branch <new_branch_name>` - create a branch. This command will not switch  to the new branch. To create a new branch and switch to it (check it out), use `$ git checkout -b <new_branch_name>`)
-* `$ git branch -d <branch_name>` - deletes the branch from the local repository (but if it existed in the remote directory - it will still exist there, and you will be able to pull it). To delete from a remote location, use `$ git push origin --delete <branch_name>` (a shortcut for that is using a colon syntax `$ git push origin :<branch_name>`). In case the branch has changes, and was not merged, you will see an error message, and to force the deletion, you will have to use `-D` option.
+* `$ git branch -d <branch_name>` - deletes the branch from the local repository (but if it existed in the remote directory - it will still exist there, and you will be able to pull it). To delete from a remote location, use `$ git push origin --delete <branch_name>` (a shortcut for that, using a colon syntax, is `$ git push origin :<branch_name>`). In case the branch has changes, and was not merged, you will see an error message, and to force the deletion, you will have to use `-D` option.
 * `$ git branch -m <new_branch_name>` - rename your current branch to <new_branch_name> (and the corresponding reflog)
 
-## branch v2
+## checkout
 
-Git branch can work with single branch of all branches - depending if you supply a branch name as an argument.
+Git checkout, does two things; either switches between branches, or checks out a file (or a tree).
 
-The most popular uses, without giving it a particular branch are
+To checkout means to update file/files/tree in the working tree with those from the index or specified tree in the repository. In other words, update the current working directory with files from a given version from history.
 
-* List existing branches: `$ git branch`
-* `$ git branch -a` - will include remote branches (`-r` shows only remote-tracking branches)
-* `$ git branch -v` - gives (like always) more verbose output - here it includes the hashes and commit messages
-
-The most popular, branch specific uses include 
-
-* Create a branch: `$ git branch <new_branch_name>` - this command will not switch  to the new branch. To create a new branch and switch to it (check it out), use `$ git checkout -b <new_branch_name>`)
-* Delete a branch: `$ git branch -d <branch_name>` - deletes the branch from the local repository (but if it existed in the remote directory - it will still exist there, and you will be able to pull it). To delete from a remote location, use `$ git push origin --delete <branch_name>` (a shortcut for that is using a colon syntax `$ git push origin :<branch_name>`). In case the branch has changes, and was not merged, you will se an error message, and to force the deletion, you will have to use `-D` option.
-* Rename a branch: `$ git branch -m <new_branch_name>` - rename your current branch to <new_branch_name> (and the corresponding reflog)
-
-## checkout [not ready]
+* `$ git checkout <branch_name>` - switch to an existing `<branch_name>`. Using the `-b` option will create new branch before checking it out. That is git 101.
 
 * checkout with HEAD~4
 * `$ git checkout branch_name` - ...
-* `$ git checkout -b branch_name` - ...
+
 
 ## cherry-pick [not ready]
 
@@ -466,7 +471,7 @@ The most popular, branch specific uses include
 
 ## diff [not ready]
 
-`git diff --staged` (older alias --cached) staging area <-> HEAD
+`git diff --staged` (previous option name `--cached`) staging area <-> HEAD
 `git diff HEAD` - work tree <-> HEAD (all changes from the last commit)
 `git diff` - work tree <-> staging area
 
@@ -656,6 +661,7 @@ Creates given number of files with random names, writes 10 lines with random str
 
 * Git under the hood: Advanced Git: Graphs, Hashes, and Compression, Oh My! (https://www.youtube.com/watch?v=ig5E8CcdM9g)
 * List of very handy aliases to make your work with git easier, faster and at times more secure: https://hackernoon.com/lesser-known-git-commands-151a1918a60
+* Specifying git revisions (from `$ man girevisions`): https://www.kernel.org/pub/software/scm/git/docs/gitrevisions.html 
 
 
 ==============================================================
