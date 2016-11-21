@@ -451,15 +451,14 @@ The most popular, branch specific uses include
 
 ## checkout
 
-Git checkout, does two things; either switches between branches, or checks out a file (or a tree).
+Git checkout, does two things; either switches between branches, or checks out a file (or a tree) from the history. 
 
-To checkout means to update file/files/tree in the working tree with those from the index or specified tree in the repository. In other words, update the current working directory with files from a given version from history.
+To checkout means to take the version of the file or directory (tree), or the whole working tree (all your files) from a given revision from your repository.
+
+Checking out a whole working tree (i.e. a previous commit), like `$ git checkout  551c3e0` would lead to a [detached head state](#detached-head).
 
 * `$ git checkout <branch_name>` - switch to an existing `<branch_name>`. Using the `-b` option will create new branch before checking it out. That is git 101.
-
-* checkout with HEAD~4
-* `$ git checkout branch_name` - ...
-
+* `$ git checkout master~3 <file_name>` - update <file_name> with a version from master~3 (this can be any revision, where the file <file_name> existed). If no revision is supplied, git will try to checkout the file from the latest tree/commit. You can use this after accidentally deleting a file from a working tree.
 
 ## cherry-pick [not ready]
 
