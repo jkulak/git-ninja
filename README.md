@@ -525,15 +525,26 @@ git reset -p
 * config rerere.enabled true
 * true to reuse recorded resolution (in case there will be many same conflicts while merging)
 
-# Popular use cases [not ready]
+# Popular use cases
 
-## How to rewrite last commit message
+## How to review one of the previous commits/working trees
+
+Assuming you are on a `branch_name` branch.
+
+1. `$ git log` - or your favourite log command to find a revision that you are interested in and copy its hash 
+* `$ git stash` - to stash all current, uncommitted changes
+* `$ git checkout <revision>` - this updates the working tree with version from the selected revision and puts you in the [detached head state](#detached-head)
+* Look around, review what you wanted
+* `$ git checkout branch_name` - to return to the latest version of your branch
+* `$ git stash pop` - to bring your uncommitted changes back
 
 ## Create a branch from a previous commit [not ready]
 
 1. `git checkout HEAD~5` - enter detached head state
 2. make some changes
 3. `git checkout -b new_branch`
+
+## How to rewrite last commit message
 
 # How to undo things [not ready]
 
