@@ -769,7 +769,7 @@ Your cooperation model depends heavily on your organisation, so it discuss inter
 
 For testing and learning purposes, it might help, when you can see the history of your repository live, when you are making the changes. See the git loglive script in action
 
-![git loglive in action](https://github.com/jkulak/git-ninja/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+![How to use git loglive script](https://raw.githubusercontent.com/jkulak/git-ninja/master/resources/git-loglive.gif "git loglive in action")
 
 The script is available here: https://gist.github.com/jkulak/9d188fb51e4ea1821b2bb5f748a57b64
 
