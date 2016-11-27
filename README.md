@@ -24,42 +24,9 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
 
 # TOC
 
-1. [What is GIT?](#1-what-is-git)
-* [Config](#2-config)
-* [Customise your environment](#3-customise-your-environment)
-    * [Your prompt](#customise-your-prompt)
-    * [Add custom aliases (for displaying logs)](#add-custom-aliases-for-displaying-logs)
-    * [Enable autocompletion](#enable-autocompletion)
-* [Under the hood](#under-the-hood)
-* [References](#references)
-* [HEAD and heads](#head-and-heads)
-* [Reference shortcuts (HEAD^^)](#reference-shortcuts)
-* [Specifying revisions](#specifying-revisions)
-* [Git file sections](#git-file-sections)
-* [What is](#what-is)
-    * [Detached HEAD](#detached-head)
-    * [Upstream](#upstream)
-* [Commands](#commands)
-    * [add](#add)
-    * [bisect](#bisect)
-    * [checkout](#checkout)
-    * [branch](#branch)
-* [Rerere](#rerere)
-* [Popular use cases](#popular-use-cases)
-    * [Create a branch from a previous commit](#create-a-branch-from-a-previous-commit)
-* [How to undo things](#how-to-undo-things)
-* [Handy commands](#handy-commands)
-* [Git workflows](#git-workflows)
-* [Prepare your code for commit](#prepare-your-code-for-commit)
-* [Great commit messages](#great-commit-messages)
-* [Good practices](#good-practices)
-* [Do's and don'ts](#dos-and-donts)
-* [Aaah moments](#aaah-moments)
-* [Scripts](#scripts)
-* [Extra facts](#extra-facts)
-* [Additional resources](#additional-resources)
+{{TOC}}
 
-# 1. What is GIT?
+# What is GIT?
 
 Git describes itself as "git - the stupid content tracker" (from `$ man git`). It means that it doesn't do any magic 🔩 under the hood - it does exactly what **you** tell it to do.
 
@@ -118,7 +85,7 @@ Further aliases I'm using, can be found here: [Custom aliases for displaying log
 
 [🔝 go to table of content](#toc)
 
-# 3. Customise your environment
+# Customise your environment
 
 If you are working a lot with git in your command line, it makes sense to make it easier and speed it up a little bit by
 
@@ -156,7 +123,7 @@ Now, you will be able to use TAB key to auto-complete commands, branch names and
 
 [🔝 go to table of content](#toc)
 
-# 4. Under the hood
+# Under the hood
 
 The most important part, that made me understand so many things about git. It's also not as complex as one might think.
 
@@ -435,7 +402,7 @@ And now you know, that the commit `0019443` was when the file was added to the r
 
 ## branch
 
-Git branch can work with single branch or all branches - depending if you supply a branch name as an argument.
+Git `branch` can work with single branch or all branches - depending if you supply a branch name as an argument.
 
 The most popular uses, without giving it a particular branch are
 
@@ -460,9 +427,17 @@ Checking out a whole working tree (i.e. a previous commit), like `$ git checkout
 * `$ git checkout <branch_name>` - switch to an existing `<branch_name>`. Using the `-b` option will create new branch before checking it out. That is git 101.
 * `$ git checkout master~3 <file_name>` - update <file_name> with a version from master~3 (this can be any revision, where the file <file_name> existed). If no revision is supplied, git will try to checkout the file from the latest tree/commit. You can use this after accidentally deleting a file from a working tree.
 
-## cherry-pick [not ready]
+## cherry-pick
 
-* `$ git cherry-pick hash` - to copy the commit to current branch
+Git `cherry-pick` is used to apply commits from another branch onto the current one. It's often used when you commit something to a wrong branch, and you want to move it to a proper one. It doesn't move the commits, it creates the new commit, with a new sha-1.
+
+* `$ git cherry-pick <revision>` - to copy the commit to current branch. If you want to get rid of the commit from the source branch, see [reset](#reset)
+
+See the full entry for [cherry-pick](https://www.kernel.org/pub/software/scm/git/docs/git-cherry-pick.html) in the The Linux man-pages project.
+
+## clean [not ready]
+
+...
 
 ## commit [not ready]
 
@@ -654,6 +629,8 @@ Your cooperation model depends heavily on your organisation, so it discuss inter
 # My oh! moments [not ready]
 
 * branch is simply a text file that contains in plain text the name of the commit it points to -  branch is just a label
+
+# git loglive [not ready]
 
 # Scripts [not ready]
 
