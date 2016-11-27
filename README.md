@@ -77,7 +77,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
 - [Good practices](#good-practices)
 - [Do's and don'ts [not ready]](#do-s-and-don-ts--not-ready-)
 - [My oh! moments [not ready]](#my-oh--moments--not-ready-)
-- [git loglive [not ready]](#git-loglive--not-ready-)
+- [git loglive](#git-loglive)
 - [Scripts [not ready]](#scripts--not-ready-)
   * [create-commits.sh](#create-commitssh)
 - [Extra facts [not ready]](#extra-facts--not-ready-)
@@ -765,7 +765,13 @@ Your cooperation model depends heavily on your organisation, so it discuss inter
 
 [🔝 go to table of content](#toc)
 
-# git loglive [not ready]
+# git loglive
+
+For testing and learning purposes, it might help, when you can see the history of your repository live, when you are making the changes. See the git loglive script in action
+
+![git loglive in action](https://github.com/jkulak/git-ninja/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+
+The script is available here: https://gist.github.com/jkulak/9d188fb51e4ea1821b2bb5f748a57b64
 
 [🔝 go to table of content](#toc)
 
