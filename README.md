@@ -24,7 +24,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
 
 # TOC
 
-- [What is GIT?](#what-is-git-)
+- [What is GIT?](#what-is-git)
 - [Config](#config)
   * [Aliases](#aliases)
 - [Customise your environment](#customise-your-environment)
@@ -42,7 +42,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
   * [Working tree](#working-tree)
   * [Detached HEAD](#detached-head)
   * [Fast-forward merge](#fast-forward-merge)
-  * [commit-ish (tree-ish)](#commit-ish--tree-ish-)
+  * [commit-ish (tree-ish)](#commit-ish-tree-ish)
 - [Commands](#commands)
   * [add](#add)
   * [bisect](#bisect)
@@ -95,7 +95,7 @@ To see a condensed version of the help, with a list of available options for a c
 
 [🔝 go to table of content](#toc)
 
-# 2. Config
+# Config
 
 Git stores it's configuration in three places (for different scopes): system (applied to all users on the system), global (applied to all user's repositories) and local (per project).
 
@@ -183,6 +183,8 @@ Now, you will be able to use TAB key to auto-complete commands, branch names and
 # Under the hood
 
 The most important part, that made me understand so many things about git. It's also not as complex as one might think.
+
+[🔝 go to table of content](#toc)
 
 ## Git data model
 
@@ -356,6 +358,8 @@ Check out https://www.kernel.org/pub/software/scm/git/docs/gitrevisions.html (or
 
 [NOTE: https://www.kernel.org/pub/software/scm/git/docs/gitrevisions.html]
 
+[🔝 go to table of content](#toc)
+
 # What is a...
 
 ## Upstream
@@ -364,15 +368,21 @@ Basically upstream for your repository (or branch or tag) is a repository you pu
 
 Since git is a distributed system - it's important to understand, that there is no absolute upstream (nor downstream) repository - it's all question of the configuration of your repository.
 
+[🔝 go to table of content](#toc)
+
 ## Git staging area
 
 Staging area (sometimes an old name "index" is still being used) is a virtual list of objects scheduled for the next commit. It's a snapshot of a working tree that will be used when you perform `commit` command. You can add files to the staging area and remove them from there if needed. Files in the staging area are _staged for the next commit_.
+
+[🔝 go to table of content](#toc)
 
 ## Working tree
 
 The working tree means all directories and files in your project in their current state. The top level tree (directory) that points to all directories and files it contains and so on. It is the current state of the files and directories after the last commit and your changes. Working tree can have files that are untracked (new files), staged (after you executed `add` command on them), committed (everything you committed) and pushed.
 
 Files that are staged (added to the next commit), are still a part of the working tree. (🔑)
+
+[🔝 go to table of content](#toc)
 
 ## Detached HEAD
 
@@ -384,13 +394,19 @@ This can happen, for example, when you execute `$ git checkout cd924da` (or `$ g
 
 It's nothing scary, you are not loosing any files nor commits. Read [what to do when you find yourself in the detached head state](#detached-head-state).
 
+[🔝 go to table of content](#toc)
+
 ## Fast-forward merge
 
 Fast-forward merge doesn't create an extra commit for merging the changes (like GitHub pull request does), and keeps the history linear. 🔩 Under the hood, it means that the head of the branch that we are merging on to is simply moved to the head of the branch that we are merging from.
 
+[🔝 go to table of content](#toc)
+
 ## commit-ish (tree-ish)
 
 ...
+
+[🔝 go to table of content](#toc)
 
 # Commands
 
@@ -409,6 +425,8 @@ Most of the commands will accept several universal options, like
 Often, using a capital letter as an option will mean forcing that option. I.e. `$ git branch -D <branch_name>` is same as `$ git branch -d --force <branch_name>`.
 
 Below I have listed the most popular/useful commands with their most useful usage (and less known tricks/options) in my opinion.
+
+[🔝 go to table of content](#toc)
 
 ## add
 
@@ -457,6 +475,8 @@ Running the bisect testing script...
 
 And now you know, that the commit `0019443` was when the file was added to the repository.
 
+[🔝 go to table of content](#toc)
+
 ## branch
 
 Git `branch` can work with single branch or all branches - depending if you supply a branch name as an argument.
@@ -473,6 +493,8 @@ The most popular, branch specific uses include
 * `$ git branch -d <branch_name>` - deletes the branch from the local repository (but if it existed in the remote directory - it will still exist there, and you will be able to pull it). To delete from a remote location, use `$ git push origin --delete <branch_name>` (a shortcut for that, using a colon syntax, is `$ git push origin :<branch_name>`). In case the branch has changes, and was not merged, you will see an error message, and to force the deletion, you will have to use `-D` option.
 * `$ git branch -m <new_branch_name>` - rename your current branch to <new_branch_name> (and the corresponding reflog)
 
+[🔝 go to table of content](#toc)
+
 ## checkout
 
 Git checkout, does two things; either switches between branches, or checks out a file (or a tree) from the history. 
@@ -484,6 +506,8 @@ Checking out a whole working tree (i.e. a previous commit), like `$ git checkout
 * `$ git checkout <branch_name>` - switch to an existing `<branch_name>`. Using the `-b` option will create new branch before checking it out. That is git 101.
 * `$ git checkout master~3 <file_name>` - update <file_name> with a version from master~3 (this can be any revision, where the file <file_name> existed). If no revision is supplied, git will try to checkout the file from the latest tree/commit. You can use this after accidentally deleting a file from a working tree.
 
+[🔝 go to table of content](#toc)
+
 ## cherry-pick
 
 Git `cherry-pick` is used to apply commits from another branch onto the current one. It's often used when you commit something to a wrong branch, and you want to move it to a proper one. It doesn't move the commits, it creates the new commit, with a new sha-1.
@@ -492,13 +516,19 @@ Git `cherry-pick` is used to apply commits from another branch onto the current 
 
 See the full entry for [cherry-pick](https://www.kernel.org/pub/software/scm/git/docs/git-cherry-pick.html) in the The Linux man-pages project.
 
+[🔝 go to table of content](#toc)
+
 ## clean [not ready]
 
 ...
 
+[🔝 go to table of content](#toc)
+
 ## commit [not ready]
 
 * `$ git commit --amend`
+
+[🔝 go to table of content](#toc)
 
 ## diff [not ready]
 
@@ -506,14 +536,20 @@ See the full entry for [cherry-pick](https://www.kernel.org/pub/software/scm/git
 `git diff HEAD` - work tree <-> HEAD (all changes from the last commit)
 `git diff` - work tree <-> staging area
 
+[🔝 go to table of content](#toc)
+
 ## fetch [not ready]
 
 * `$ git fetch` - to read the data from origin
+
+[🔝 go to table of content](#toc)
 
 ## merge [not ready]
 
 * `(master) $ git merge feature` - applies all changes on top of master changes and creates a merge commit* (*depends on --no-ff)
 * `$ git merge --abort` - cancel the merge
+
+[🔝 go to table of content](#toc)
 
 ## rebase [not ready]
 
@@ -526,11 +562,15 @@ See the full entry for [cherry-pick](https://www.kernel.org/pub/software/scm/git
 1. Rebase branch over master
 2. Rebase -i to clean the history
 
+[🔝 go to table of content](#toc)
+
 ## reflog [not ready]
 
 Reflog is your friend when you are lost (and that can happen often when you are rewriting history).
 
 * `$ git reflog` - to see the list of hashes with the last actions
+
+[🔝 go to table of content](#toc)
 
 ## reset [not ready]
 
@@ -542,9 +582,13 @@ git reset -p
 
 - git reset --hard to any commit in any branch to move head there
 
+[🔝 go to table of content](#toc)
+
 ## revert [not ready]
 
 ...
+
+[🔝 go to table of content](#toc)
 
 ## stash [not ready]
 
@@ -552,10 +596,14 @@ git reset -p
 - pop
 - list
 
+[🔝 go to table of content](#toc)
+
 # Rerere [not ready]
 
 * config rerere.enabled true
 * true to reuse recorded resolution (in case there will be many same conflicts while merging)
+
+[🔝 go to table of content](#toc)
 
 # Popular use cases
 
@@ -570,26 +618,38 @@ Assuming you are on a `branch_name` branch.
 * `$ git checkout branch_name` - to return to the latest version of your branch
 * `$ git stash pop` - to bring your uncommitted changes back
 
+[🔝 go to table of content](#toc)
+
 ## Create a branch from a previous commit [not ready]
 
 1. `git checkout HEAD~5` - enter detached head state
 2. make some changes
 3. `git checkout -b new_branch`
 
+[🔝 go to table of content](#toc)
+
 ## How to rewrite last commit message
+
+[🔝 go to table of content](#toc)
 
 # How to undo things [not ready]
 
 ## Undo last commit [not ready]
 See: [reset](#reset)
-...
+
+[🔝 go to table of content](#toc)
+
 ## Unstage file [not ready]
 
 * `$ git reset file_name`
 
+[🔝 go to table of content](#toc)
+
 ## Unstage everything [not ready]
 
 * `$ git reset`
+
+[🔝 go to table of content](#toc)
 
 ## Recover deleted file (already staged) [not ready]
 
@@ -598,6 +658,8 @@ See: [reset](#reset)
 
 Use `--` to split commands from parameters
 
+[🔝 go to table of content](#toc)
+
 ## Recover lost commit [not ready]
 
 1. `$ git reflog` - to see the list of hashes with last actions
@@ -605,11 +667,15 @@ Use `--` to split commands from parameters
 * `$ git checkout my_branch` - to move to the branch you want to fix
 * `$ git reset --hard hash` - to move it to the desirable state
 
+[🔝 go to table of content](#toc)
+
 # Handy commands [not ready]
 
 * `$ git checkout -` - checkout last used branch
 * `$ git grep keyword` - greps directory returning results with searched keyword, ignores files in your `.gitignore` by default
 * `$ git shortlog -sne` - show number of commits per person with their e-mail address
+
+[🔝 go to table of content](#toc)
 
 # Git workflows [not ready]
 
@@ -623,6 +689,8 @@ http://nvie.com/posts/a-successful-git-branching-model/
 - rebasing
 - --no-ff
 - pull request (GitHub)
+
+[🔝 go to table of content](#toc)
 
 # Prepare your code for commit
 
@@ -639,6 +707,8 @@ Of course your preferences may vary, so those are just suggestions.
 Best if you make your favourite code editor take care of all those points (all the most popular code editors have you covered check out Atom or Sublime Text).
 
 I found it a good solution to have a `.editorconfig` file in your repository (http://editorconfig.org/) that is shared with other contributors, that fixes the crucial configuration for your editors (and is supported by most of the popular editors). An example of a `.editorconfig` file: [https://github.com/babel/babel/blob/master/.editorconfig](https://github.com/babel/babel/blob/master/.editorconfig)
+
+[🔝 go to table of content](#toc)
 
 # Great commit messages
 
@@ -663,7 +733,9 @@ To make it easier for everyone and keep your commit history clean, in your commi
 
 Go to [http://whatthecommit.com/](http://whatthecommit.com/) and don't use it as an inspiration! 😁
 
-Remember that before pushing to your remote, you can also rewrite your commit messages (see `--amend` switch in [commit](#commit) section) and in case of redundant commits (like `Fix typo`) you can squash them into one (see [rebase](#rabse)).
+Remember that before pushing to your remote, you can also rewrite your commit messages (see `--amend` switch in [commit](#commit) section) and in case of redundant commits (like `Fix typo`) you can squash them into one (see [rebase](#rebase)).
+
+[🔝 go to table of content](#toc)
 
 # Good practices
 
@@ -678,28 +750,42 @@ Your cooperation model depends heavily on your organisation, so it discuss inter
 * Have linting implemented in your workflow (with shared/common configuration among your team)
 * When pulling from origin use `$ git pull --rebase` - to put your changes on top of new remote changes
 
+[🔝 go to table of content](#toc)
+
 # Do's and don'ts [not ready]
 - don't rebase master?
 - don't rewrite published history
 - don't force push (`git push -f`) unless you know _exactly_ what you are doing!
 
+[🔝 go to table of content](#toc)
+
 # My oh! moments [not ready]
 
 * branch is simply a text file that contains in plain text the name of the commit it points to -  branch is just a label
 
+[🔝 go to table of content](#toc)
+
 # git loglive [not ready]
+
+[🔝 go to table of content](#toc)
 
 # Scripts [not ready]
 
 Scripts are located in `scripts` directory. Use them to initiate fake repositories to practice git commands.
 
+[🔝 go to table of content](#toc)
+
 ## create-commits.sh
 
 Creates given number of files with random names, writes 10 lines with random strings to each and creates a commit for each file. Usage: `./create-commits.sh 20`
 
+[🔝 go to table of content](#toc)
+
 # Extra facts [not ready]
 
 * You can merge from multiple branches, and the merge is called octomerge - this is where the GitHub logo (octocat, previously known as, not so corporate friendly, octopuss) comes from that name.
+
+[🔝 go to table of content](#toc)
 
 # Additional resources [not ready]
 
@@ -707,21 +793,13 @@ Creates given number of files with random names, writes 10 lines with random str
 * List of very handy aliases to make your work with git easier, faster and at times more secure: https://hackernoon.com/lesser-known-git-commands-151a1918a60
 * Specifying git revisions (from `$ man girevisions`): https://www.kernel.org/pub/software/scm/git/docs/gitrevisions.html 
 
+[🔝 go to table of content](#toc)
 
-==============================================================
-= NOTES 
-==============================================================
+# My notes - won't be here in the final version
 
-My aliases
+* alias.m = "checkout master"
+* (Side note: `$ while :; do clear; ls .git/objects -a; sleep 2; done`)
 
-
-git m = 
-
-alias.m = "checkout master"
-
-git config 
-
-How git stores files (objects directory + graph)
 - DAG directed acyclic graph
 - hash, 40 characters, sha-1, globally unique
 - 4 types of files stored in objects (blob, tree, commit, tag)
@@ -732,5 +810,3 @@ How git stores files (objects directory + graph)
 
 `git show --pretty=raw HEAD`
 `git cat-file -p d3f732a` or HEAD
-
-(Side note: `$ while :; do clear; ls .git/objects -a; sleep 2; done`)
