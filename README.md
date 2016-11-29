@@ -85,11 +85,11 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
 
 # What is GIT?
 
-Git describes itself as "git - the stupid content tracker" (from `$ man git`). It means that it doesn't do any magic 🔩 under the hood - it does exactly what **you** tell it to do.
+Git describes itself as "git - the stupid content tracker" (from `$ man git`). It means that it does not do any magic 🔩 under the hood - it does exactly what **you** tell it to do.
 
 Apart from many excellent git books and tutorials, you can always `$ man git` to read more about it.
 
-To read about a specific command you can `$ man git show-ref`.
+To read about a specific command you can `$ man git-show-ref`, `$ man git-clean`, and so on. 
 
 To see a condensed version of the help, with a list of available options for a command, type `$ git reset -h`. Like always, right?
 
@@ -97,17 +97,17 @@ To see a condensed version of the help, with a list of available options for a c
 
 # Config
 
-Git stores it's configuration in three places (for different scopes): system (applied to all users on the system), global (applied to all user's repositories) and local (per project).
+Git stores its configuration in three places (for different scopes): system (applied to all users on the system), global (applied to all users' repositories) and local (per project).
 
 * System config is stored in `/etc/gitconfig` and you need admin rights to modify it
 * Global config is stored in user's home directory in `~/.gitconfig`.
-* Local configs are stored inside your repositories in `project/.git/config`.
+* Local configs are stored inside your repositories in `.git/config`.
 
 Configuration from local config overwrites the global configuration that overwrites the system configuration.
 
 To add/modify configuration settings, you can either edit the files directly, or use git `config` command.
 
-Use `$ git config --global user.email "jakub.kulak@gmail.com"` to add/change e-mail address you want to use with your commits.
+Use `$ git config --global user.email "myname@example.com"` to add/change e-mail address you want to use with your commits.
 
 Switches `--local` (default), `--global`, `--system` will apply changes to appropriate scope/config file.
 
@@ -138,7 +138,7 @@ Other examples of aliases that I'm using (from my `~/.gitconfig` file)
     lgf = log --graph --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(bold white)— %an%C(reset)%C(bold yellow)%d%C(reset)' --abbrev-commit --date=relative
 ```
 
-Further aliases I'm using, can be found here: [Custom aliases for displaying logs](#https://github.com/jkulak/my-config-files#add-custom-aliases-for-displaying-logs)
+Further aliases I'm using, can be found here: [Custom aliases for displaying logs](#https://github.com/jdoe/my-config-files#add-custom-aliases-for-displaying-logs)
 
 [🔝 go to table of content](#toc)
 
@@ -228,7 +228,7 @@ That's why sometimes git is referred to as "a content-addressable file system wi
 You can see all the objects in your repository by listing `.git/objects` directory.
 
 ```bash
-jkulak, git-ninja (master) $ tree .git/objects/
+jdoe, git-ninja (master) $ tree .git/objects/
 .git/objects/
 ├── 1d
 │   ├── 5e36e2b1e6e9959e0c67829c189634efb4dc29
@@ -244,12 +244,12 @@ jkulak, git-ninja (master) $ tree .git/objects/
 [...]
 ```
 
-For performance purposes, objects are stored in the directories named with two first characters of their hash, and the rest being the filename of the file.
+For performance purposes, objects are stored in the directories named with two, first characters of their hash, and the rest being the filename of the file.
 
 You know those hash identifiers from the `$ git log` command that is listing the hashes for commit objects from your repository.
 
 ```bash
-jkulak, kitchen-lol-slack-bot (dockerize) $ git log --pretty=oneline
+jdoe, kitchen-lol-slack-bot (dockerize) $ git log --pretty=oneline
 0a1707f228fef8287d09271d1e07e8d75669f5ff Optimise provisionig time
 8ace349d0ddc0118db0281a30854933c52abe7d8 Use nginx as reverse proxy
 2c8696a9e142d1d14a45eef7bbf61d36009d5193 Remove unofficial cookbook dependecies
@@ -270,8 +270,8 @@ Use `$ git cat-file -p d3f732a` to view the content of the object. For a commit 
 ```bash
 tree ba40ec9f2089afbc1b88c49e60814445c4b916b7
 parent 7ce3c76716758916cb4177fc3cc88fe685dced5e
-author Jakub Kułak <jakub.kulak@gmail.com> 1478149279 -0600
-committer Jakub Kułak <jakub.kulak@gmail.com> 1478149279 -0600
+author Jane Doe <jane.doe@example.com> 1478149279 -0600
+committer Jane Doe <jane.doe@example.com> 1478149279 -0600
 
 Fill README.md with 👍🏻 and ❤️
 ```
@@ -318,7 +318,7 @@ HEAD is a reference to the latest commit in currently checked out branch[*]. HEA
 When you list `.git/refs/heads` directory, or run `$ git show-ref --heads` you might see several entries
 
 ```bash
-jkulak, inr-api (new-school-deployment) $ git show-ref --heads
+jdoe, inr-api (new-school-deployment) $ git show-ref --heads
 f88023944e7059f4636dd68fd819b514f4819fda refs/heads/develop
 0396959e8e2be4ef255f274589f862755d90cab1 refs/heads/master
 4663e74ce653141d27b9ba92d17f9d9299c91393 refs/heads/new-school-deployment
@@ -465,7 +465,7 @@ $ git bisect run ./bisect-test.sh
 And after couple of seconds, you will get
 
 ```bash
-jkulak, npm ((3fff687...)|BISECTING) $ git bisect run ./bisect-test.sh
+jdoe, npm ((3fff687...)|BISECTING) $ git bisect run ./bisect-test.sh
 running ./bisect-test.sh
 [...]
 Running the bisect testing script...
@@ -800,9 +800,9 @@ Your cooperation model depends heavily on your organisation, so it discuss inter
 
 For testing and learning purposes, it might help, when you can see the history of your repository live, when you are making the changes. See the git loglive script in action
 
-![How to use git loglive script](https://raw.githubusercontent.com/jkulak/git-ninja/master/resources/git-loglive.gif "git loglive in action")
+![How to use git loglive script](https://raw.githubusercontent.com/jdoe/git-ninja/master/resources/git-loglive.gif "git loglive in action")
 
-The script is available here: https://gist.github.com/jkulak/9d188fb51e4ea1821b2bb5f748a57b64
+The script is available here: https://gist.github.com/jdoe/9d188fb51e4ea1821b2bb5f748a57b64
 
 [🔝 go to table of content](#toc)
 
