@@ -802,7 +802,7 @@ For testing and learning purposes, it might help, when you can see the history o
 
 ![How to use git loglive script](https://raw.githubusercontent.com/jkulak/git-ninja/master/resources/git-loglive.gif "git loglive in action")
 
-The script is available here: https://gist.github.com/jdoe/9d188fb51e4ea1821b2bb5f748a57b64
+The script is available here: https://gist.github.com/jkulak/9d188fb51e4ea1821b2bb5f748a57b64
 
 [🔝 go to table of content](#toc)
 
