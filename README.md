@@ -51,7 +51,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
   * [cherry-pick](#cherry-pick)
   * [clean](#clean)
   * [commit [not ready]](#commit--not-ready-)
-  * [diff [not ready]](#diff--not-ready-)
+  * [diff](#diff)
   * [fetch [not ready]](#fetch--not-ready-)
   * [merge [not ready]](#merge--not-ready-)
   * [rebase [not ready]](#rebase--not-ready-)
@@ -520,7 +520,7 @@ See the full entry for [cherry-pick](https://www.kernel.org/pub/software/scm/git
 
 ## clean
 
-Git clean removes untracked files from the repository.
+Git `clean` removes untracked files from the repository.
 
 It comes in handy, when you, for example, unzip an archive in your working tree with many files. Git `clean` does not remove directories by default. To remove also untracked directories, add `-d` option.
 
@@ -538,11 +538,31 @@ As with most of the git commands, you can use `-n` option to only dry-run the pr
 
 [🔝 go to table of content](#toc)
 
-## diff [not ready]
+## diff
 
-`git diff --staged` (previous option name `--cached`) staging area <-> HEAD
-`git diff HEAD` - work tree <-> HEAD (all changes from the last commit)
-`git diff` - work tree <-> staging area
+Git `diff` shows the differences/changes between commits, tags, staging area and working tree. In the regular daily workflow of a developer, those three variants are most useful
+
+* `$ git diff` - without any parameters, it will show the changes between the working tree and the staging area (all changes you have introduced after last git `add` command).
+* `$ git diff --staged` - (previous option name `--cached`) shows changes between the staging area (staged for the next commit) and the last last commit (current `HEAD`), it doesn't show any changes you introduced after your last git `add` command.
+* `$ git diff HEAD` - shows all changed introduced after last commit. In other words, it shows all changes between the working tree (either staged or not) and the current `HEAD`.
+
+It is possible to compare two commits, by running `diff` with their hashes: `$ git diff 9664c64 e748eab` or using the revision shortcuts like: `$ git diff HEAD~11 HEAD`.
+
+To get a summary of file changes, use the `--raw` option.
+
+`$ git diff master~8 master --raw` that will result in a similar (kind of) output, showing which files have been added/modified/deleted
+
+```
+:100644 100644 9bae3ce... 1860be7... M  Dockerfile
+:000000 100644 0000000... 2ce4f19... A  README.md
+:100644 100644 d90a5e7... 9e68223... M  index.js
+:000000 100644 0000000... 4e13ce8... A  lib/server.js
+:100644 100644 a0257a7... e991f95... M  process.json
+:100755 100755 07ce281... 8036a21... M  scripts/docker-deploy.sh
+:100644 100644 9ae55d6... 914fc83... M  web/app.js
+:100644 100644 27b76b7... 53f40f4... M  web/index.html
+:100644 100644 67d73af... 08a1bb4... M  web/main.css
+```
 
 [🔝 go to table of content](#toc)
 
