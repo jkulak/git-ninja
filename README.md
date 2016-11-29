@@ -78,7 +78,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
 - [Do's and don'ts [not ready]](#do-s-and-don-ts--not-ready-)
 - [My oh! moments [not ready]](#my-oh--moments--not-ready-)
 - [git loglive](#git-loglive)
-- [Scripts [not ready]](#scripts--not-ready-)
+- [Scripts](#scripts)
   * [create-commits.sh](#create-commitssh)
 - [Extra facts [not ready]](#extra-facts--not-ready-)
 - [Additional resources [not ready]](#additional-resources--not-ready-)
@@ -806,9 +806,9 @@ The script is available here: https://gist.github.com/jkulak/9d188fb51e4ea1821b2
 
 [🔝 go to table of content](#toc)
 
-# Scripts [not ready]
+# Scripts
 
-Scripts are located in `scripts` directory. Use them to initiate fake repositories to practice git commands.
+Scripts are located in `scripts` directory. Use them to create test repositories, commits and more - to practice git commands.
 
 [🔝 go to table of content](#toc)
 
