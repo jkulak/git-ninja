@@ -49,7 +49,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
   * [branch](#branch)
   * [checkout](#checkout)
   * [cherry-pick](#cherry-pick)
-  * [clean [not ready]](#clean--not-ready-)
+  * [clean](#clean)
   * [commit [not ready]](#commit--not-ready-)
   * [diff [not ready]](#diff--not-ready-)
   * [fetch [not ready]](#fetch--not-ready-)
@@ -518,9 +518,17 @@ See the full entry for [cherry-pick](https://www.kernel.org/pub/software/scm/git
 
 [🔝 go to table of content](#toc)
 
-## clean [not ready]
+## clean
 
-...
+Git clean removes untracked files from the repository.
+
+It comes in handy, when you, for example, unzip an archive in your working tree with many files. Git `clean` does not remove directories by default. To remove also untracked directories, add `-d` option.
+
+`$ git clean -i -d` - `-i` stars for interactive, and the command will lead you through the rest of the process.
+
+Remember that you can use it inside on of the directories in the repository, not necessarily in the root directory of the repository.
+
+As with most of the git commands, you can use `-n` option to only dry-run the process to see what is there to be removed - recommended!
 
 [🔝 go to table of content](#toc)
 
