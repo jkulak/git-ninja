@@ -70,7 +70,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
   * [Unstage everything [not ready]](#unstage-everything--not-ready-)
   * [Recover deleted file (already staged) [not ready]](#recover-deleted-file--already-staged---not-ready-)
   * [Recover lost commit [not ready]](#recover-lost-commit--not-ready-)
-- [Handy commands [not ready]](#handy-commands--not-ready-)
+- [Handy commands](#handy-commands)
 - [Git workflows [not ready]](#git-workflows--not-ready-)
 - [Prepare your code for commit](#prepare-your-code-for-commit)
 - [Great commit messages](#great-commit-messages)
@@ -697,11 +697,14 @@ Use `--` to split commands from parameters
 
 [🔝 go to table of content](#toc)
 
-# Handy commands [not ready]
+# Handy commands
+
+List of some commands that I find handy, and are not easy to come up with
 
 * `$ git checkout -` - checkout last used branch
-* `$ git grep keyword` - greps directory returning results with searched keyword, ignores files in your `.gitignore` by default
+* `$ git grep keyword` - greps directory returning results with searched keyword (by default ignores files in your `.gitignore`)
 * `$ git shortlog -sne` - show number of commits per person with their e-mail address
+* `$ git rev-list --max-parents=0 HEAD` show the hash of the first commit
 
 [🔝 go to table of content](#toc)
 
@@ -748,7 +751,7 @@ How often do you see commit messages like
 * `Sometimes when split cookie, cookie not want get split. Make sure cookie edible before bite! OOMMNOMNOMnoMnoMNoMNOmNOMoNMNOM!!!!` - this one is actually taken from npm's repository 😬
 * `Fixed typo, last commit for today`
 
-I would not know if it's ready to be deployed or not, and what were the exact changes (without carefully studying the diff).
+I would not know if it is ready to be deployed or not, and what were the exact changes (without carefully studying the diff).
 
 To make it easier for everyone and keep your commit history clean, in your commit messages
 
