@@ -42,7 +42,8 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
   * [Working tree](#working-tree)
   * [Detached HEAD](#detached-head)
   * [Fast-forward merge](#fast-forward-merge)
-  * [commit-ish (tree-ish)](#commit-ish-tree-ish)
+  * [commit-ish (tree-ish) [not ready]](#commit-ish-tree-ish)
+  * [Git hook [not ready]](#git-hook)
 - [Commands](#commands)
   * [add](#add)
   * [bisect](#bisect)
@@ -50,7 +51,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
   * [checkout](#checkout)
   * [cherry-pick](#cherry-pick)
   * [clean](#clean)
-  * [commit [not ready]](#commit--not-ready-)
+  * [commit](#commit)
   * [diff](#diff)
   * [fetch [not ready]](#fetch--not-ready-)
   * [merge [not ready]](#merge--not-ready-)
@@ -75,6 +76,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
 - [Prepare your code for commit](#prepare-your-code-for-commit)
 - [Great commit messages](#great-commit-messages)
 - [Good practices](#good-practices)
+- [Overwriting the history [not ready]](#overwriting-the-history)
 - [Do's and don'ts [not ready]](#do-s-and-don-ts--not-ready-)
 - [My oh! moments [not ready]](#my-oh--moments--not-ready-)
 - [git loglive](#git-loglive)
@@ -187,7 +189,7 @@ The most important part, that made me understand so many things about git. It's 
 [🔝 go to table of content](#toc)
 
 ## Git data model
-
+    
 [NOTES: https://en.wikipedia.org/wiki/Directed_acyclic_graph
 http://eagain.net/articles/git-for-computer-scientists/]
 
@@ -226,7 +228,7 @@ Each object is given a hash identifier (40 characters, SHA-1 hash) that is globa
 That's why sometimes git is referred to as "a content-addressable file system with a VCS user interface written on top of it."
 
 You can see all the objects in your repository by listing `.git/objects` directory.
-
+    
 ```bash
 jdoe, git-ninja (master) $ tree .git/objects/
 .git/objects/
@@ -408,6 +410,12 @@ Fast-forward merge doesn't create an extra commit for merging the changes (like 
 
 [🔝 go to table of content](#toc)
 
+## Git hook [not ready]
+
+Git hooks are...
+
+[🔝 go to table of content](#toc)
+
 # Commands
 
 Git has two types of commands (reflecting the sanitary nomenclature)
@@ -532,9 +540,34 @@ As with most of the git commands, you can use `-n` option to only dry-run the pr
 
 [🔝 go to table of content](#toc)
 
-## commit [not ready]
+## commit
 
-* `$ git commit --amend`
+The `commit` command is used to create a revision (record changes to the repository), using staged changes (files added, removed, modified in the the staging area). When committing the changes you should add a meaningful message that describes your changes (read here about [useful messages](#great-commit-messages)).
+
+After staging the changes (in most cases by using the `add` command), record them to the repository by running
+
+`$ git commit -m "Make component X read Y"` - this creates a new revision and shows a standard output:
+
+```bash
+jdoe, docker-proxy (use-proxy) $ git commit -m "Run traffic through proxy"
+[use-proxy 9003f2e] Run traffic through proxy
+ 3 files changed, 8 insertions(+), 8 deletions(-)
+ delete mode 100755 docker/temp-proxy.sh
+ create mode 100644 proxy.go
+```
+
+Output shows the short hash for the created revision (9003f2e), and the changes that have been committed. To see the full hash of the latest revision, either run `$ git log` or `$ git cat-file -p use-proxy` (where `use-proxy` is the name of the current branch you just committed to) or `$ git rev-parse 9003f2e`.
+
+Not supplying the inline commit message with the `-m` option will result in git opening the default text editor (or the one specified in the config) to add the commit message. Changes are applied after you save the file with the message and exit the editor. I found using console based text editors the easiest and the fastest (and you don't need to know a lot about them - it is just several basic commands that you will use - so go and try to learn `vim`, `emacs`, `pico` or `nano`).
+
+* `$ git config --global core.editor vim` - to change the text editor that is being used (of course, name the editor of your choice)
+* `$ git commit --amend -m "Stop component X from doing Y"` - to fix a typo you made in the last commit message. This creates a new revision with a new hash (overwriting the latest commit/revision - so you will not the see the one with the typo in the history). Usually you should not overwrite your changes after you have published them (pushed to the upstream repository - read about [overwriting the history](#overwriting-the-history)).
+
+Same like `add` command, `commit` can take a `-p` (`--patch`) option, to interactively select changes to commit.
+
+To make sure that all commit messages follow one standard, `commit` command can take a `-t` (`--template`) option that will provide file name with a template for the commit message, and therefore git will start the text editor with the content of the given file. Usually you would set the template file in the config directly `$ git config --global commit.template file_name`.
+ 
+If you want to revert all changes done by the commit, read about [reset](#reset) command.
 
 [🔝 go to table of content](#toc)
 
@@ -782,6 +815,14 @@ Your cooperation model depends heavily on your organisation, so it discuss inter
 * When pulling from origin use `$ git pull --rebase` - to put your changes on top of new remote changes
 
 [🔝 go to table of content](#toc)
+
+# Overwriting the history [not ready]
+
+- When it's ok to overwrite the history
+- Why you should not overwrite the history
+- What to do if you need to overwrite the history
+    - make sure, you *really* need to overwrite it
+- How to overwrite the history
 
 # Do's and don'ts [not ready]
 - don't rebase master?
