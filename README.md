@@ -53,8 +53,9 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
   * [clean](#clean)
   * [commit](#commit)
   * [diff](#diff)
-  * [fetch [not ready]](#fetch--not-ready-)
+  * [fetch](#fetch)
   * [merge [not ready]](#merge--not-ready-)
+  * [pull [not ready]](#pull)
   * [rebase [not ready]](#rebase--not-ready-)
   * [reflog [not ready]](#reflog--not-ready-)
   * [reset [not ready]](#reset--not-ready-)
@@ -495,6 +496,11 @@ The most popular uses, without giving it a particular branch are
 * `$ git branch -a` - will include remote branches (`-r` shows only remote-tracking branches)
 * `$ git branch -v` - gives (like always) more verbose output - here it includes the hashes and commit messages
 
+Like always, if you want to see, how those branches are stored, have a look inside
+
+* `.git/refs/heads/` - for local branches
+* `.git/refs/remotes/` - for tracking branches
+
 The most popular, branch specific uses include
 
 * `$ git branch <new_branch_name>` - create a branch. This command will not switch  to the new branch. To create a new branch and switch to it (check it out), use `$ git checkout -b <new_branch_name>`)
@@ -505,14 +511,16 @@ The most popular, branch specific uses include
 
 ## checkout
 
-Git checkout, does two things; either switches between branches, or checks out a file (or a tree) from the history. 
+Git checkout, does two things; either switches between branches, or checks out a file (or a tree) from the history (or an upstream repository).
 
-To checkout means to take the version of the file or directory (tree), or the whole working tree (all your files) from a given revision from your repository.
+To checkout means to update your files/directories with the version of the file or directory (tree), or the whole working tree (all your files) from a given revision from your repository.
 
-Checking out a whole working tree (i.e. a previous commit), like `$ git checkout  551c3e0` would lead to a [detached head state](#detached-head).
+Checking out a whole working tree (i.e. a previous commit - that is not a HEAD of any branches), like `$ git checkout  551c3e0` would lead to a [detached head state](#detached-head).
 
 * `$ git checkout <branch_name>` - switch to an existing `<branch_name>`. Using the `-b` option will create new branch before checking it out. That is git 101.
 * `$ git checkout master~3 <file_name>` - update <file_name> with a version from master~3 (this can be any revision, where the file <file_name> existed). If no revision is supplied, git will try to checkout the file from the latest tree/commit. You can use this after accidentally deleting a file from a working tree.
+
+You would use `$ git checkout -b feature_x origin/feature_x` in case you want to start working on a branch, that is present in the upstream, but not in your local repository.
 
 [🔝 go to table of content](#toc)
 
@@ -599,9 +607,17 @@ To get a summary of file changes, use the `--raw` option.
 
 [🔝 go to table of content](#toc)
 
-## fetch [not ready]
+## fetch
 
-* `$ git fetch` - to read the data from origin
+Git `fetch` fetches data from the upstream repository and puts it in the local history (without changing any files nor merging the changes).
+
+Behind the scenes, a `$ git pull` does a git `fetch` and a `merge` on a currently checked out branch, so using a git `fetch` explicitly gives you more control over what is happening, and you can review the fetched changes, before merging them.
+
+Git `fetch` will update your remote-tracking branches under `.git/refs/remotes/<remote>/`. This operation does not change any of your local branches, nor does it update the working tree.
+
+* `$ git fetch origin/master` - to update your history (not a working tree) with changes from the upstream master branch.
+
+Next, while on local master branch, after reviewing changes `$ git diff origin/master`, you can merge the changes you want by running `$ git merge origin/master`.
 
 [🔝 go to table of content](#toc)
 
@@ -611,6 +627,10 @@ To get a summary of file changes, use the `--raw` option.
 * `$ git merge --abort` - cancel the merge
 
 [🔝 go to table of content](#toc)
+
+## pull [not ready]
+
+When you use pull, Git tries to automatically do your work for you. It is context sensitive, so Git will merge any pulled commits into the branch you are currently working in.  pull automatically merges the commits without letting you review them first. If you don’t closely manage your branches, you may run into frequent conflicts.
 
 ## rebase [not ready]
 
