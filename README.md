@@ -42,7 +42,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
   * [Working tree](#working-tree)
   * [Detached HEAD](#detached-head)
   * [Fast-forward merge](#fast-forward-merge)
-  * [commit-ish (tree-ish) [not ready]](#commit-ish-tree-ish)
+  * [commit-ish (tree-ish)](#commit-ish-tree-ish)
   * [Git hook [not ready]](#git-hook)
 - [Commands](#commands)
   * [add](#add)
@@ -92,7 +92,7 @@ Git describes itself as "git - the stupid content tracker" (from `$ man git`). I
 
 Apart from many excellent git books and tutorials, you can always `$ man git` to read more about it.
 
-To read about a specific command you can `$ man git-show-ref`, `$ man git-clean`, and so on. 
+To read about a specific command you can `$ man git-show-ref`, `$ man git-clean`, and so on.
 
 To see a condensed version of the help, with a list of available options for a command, type `$ git reset -h`. Like always, right?
 
@@ -190,7 +190,7 @@ The most important part, that made me understand so many things about git. It's 
 [🔝 go to table of content](#toc)
 
 ## Git data model
-    
+
 [NOTES: https://en.wikipedia.org/wiki/Directed_acyclic_graph
 http://eagain.net/articles/git-for-computer-scientists/]
 
@@ -229,7 +229,7 @@ Each object is given a hash identifier (40 characters, SHA-1 hash) that is globa
 That's why sometimes git is referred to as "a content-addressable file system with a VCS user interface written on top of it."
 
 You can see all the objects in your repository by listing `.git/objects` directory.
-    
+
 ```bash
 jdoe, git-ninja (master) $ tree .git/objects/
 .git/objects/
@@ -339,7 +339,7 @@ While on `new-school-deployment` branch, run `$ git checkout develop` to switch 
 
 You might have seen things like `HEAD^`, `HEAD~4` and `master^^`.
 
-Each commit has a parent (or more parents in case it's a merge). To reference the parent commit, you can use `^` or `~` syntax. 
+Each commit has a parent (or more parents in case it's a merge). To reference the parent commit, you can use `^` or `~` syntax.
 
 * HEAD == the commit I'm currently sitting in
 * HEAD^ == this commit's father
@@ -350,7 +350,7 @@ Each commit has a parent (or more parents in case it's a merge). To reference th
 * some-tag^^ == some-tag~2
 * some-branch^^^ == some-branch~3
 
-Check out https://www.kernel.org/pub/software/scm/git/docs/gitrevisions.html (or `$ man girevisions`) to learn more (all EVERYTHING!!!).
+Check out https://www.kernel.org/pub/software/scm/git/docs/gitrevisions.html (or `$ man gitrevisions`) to learn more (or EVERYTHING!!!).
 
 [🔝 go to table of content](#toc)
 
@@ -407,7 +407,41 @@ Fast-forward merge doesn't create an extra commit for merging the changes (like 
 
 ## commit-ish (tree-ish)
 
-...
+`<commit-ish>` and `<tree-ish>` are names for arguments you can use with some git commands. If a git commands takes a `<commit-ish>` as an argument - it wants to operate on a `<commit>`. If a git commands takes a `<tree-ish>` as an argument - it wants to operate on a `<tree>`. 🔩 Under the hood, git will derefference given `<commit-ish>` or `<tree-ish>` into a `<commit>` or a `<tree>`.
+
+Read [git under the hood](#under-the-hood) to understand how git stores its data and meta data (tags, trees, commits, blobs) to make understanding `<commit-ish>` and `<tree-ish>` easier.
+
+All possible revisions (`<commit-ish>` and `<tree-ish>`) are described here: https://www.kernel.org/pub/software/scm/git/docs/gitrevisions.html#_specifying_revisions
+
+Below the abstract from the documentation (taken from the accepted answer from [stackoverflow]( http://stackoverflow.com/questions/23303549/what-are-commit-ish-and-tree-ish-in-git))
+```
+----------------------------------------------------------------------
+|    Commit-ish/Tree-ish    |                Examples
+----------------------------------------------------------------------
+|  1. <sha1>                | dae86e1950b1277e545cee180551750029cfe735
+|  2. <describeOutput>      | v1.7.4.2-679-g3bee7fb
+|  3. <refname>             | master, heads/master, refs/heads/master
+|  4. <refname>@{<date>}    | master@{yesterday}, HEAD@{5 minutes ago}
+|  5. <refname>@{<n>}       | master@{1}
+|  6. @{<n>}                | @{1}
+|  7. @{-<n>}               | @{-1}
+|  8. <refname>@{upstream}  | master@{upstream}, @{u}
+|  9. <rev>^                | HEAD^, v1.5.1^0
+| 10. <rev>~<n>             | master~3
+| 11. <rev>^{<type>}        | v0.99.8^{commit}
+| 12. <rev>^{}              | v0.99.8^{}
+| 13. <rev>^{/<text>}       | HEAD^{/fix nasty bug}
+| 14. :/<text>              | :/fix nasty bug
+----------------------------------------------------------------------
+|       Tree-ish only       |                Examples
+----------------------------------------------------------------------
+| 15. <rev>:<path>          | HEAD:README.txt, master:sub-directory/
+----------------------------------------------------------------------
+|         Tree-ish?         |                Examples
+----------------------------------------------------------------------
+| 16. :<n>:<path>           | :0:README, :README
+----------------------------------------------------------------------
+```
 
 [🔝 go to table of content](#toc)
 
@@ -456,7 +490,7 @@ How to perform a bisect search?
 
 1. `$ git bisect start` or `$ git bisect start master 3fff687`
 2. `$ git bisect bad` - to mark current commit as bad (you need to set at least one commit as bad - can be an older one - for the search to make sense - otherwise there wouldn't be any bad commits to compare to)
-3. `$ git bisect good v1.1.3` - to mark one of the commits (tags) as good, this is optional, if you don't do it, the bisect will start from the very first commit 
+3. `$ git bisect good v1.1.3` - to mark one of the commits (tags) as good, this is optional, if you don't do it, the bisect will start from the very first commit
 4. `$ git bisect next` - to continue the bisect search, git-bisect will switch to the commit in the middle of the range, and will wait for you to perform either `$ git bisect good` - to mark the commit as good, or  `$ git bisect bad` - to mark the commit as bad and to repeat the step 4) until you find the commit that introduced the change you were looking for.
 
 You can automate the testing process by providing the `bisect` command with a shell script that will check if the change is present or not.
@@ -574,7 +608,7 @@ Not supplying the inline commit message with the `-m` option will result in git 
 Same like `add` command, `commit` can take a `-p` (`--patch`) option, to interactively select changes to commit.
 
 To make sure that all commit messages follow one standard, `commit` command can take a `-t` (`--template`) option that will provide file name with a template for the commit message, and therefore git will start the text editor with the content of the given file. Usually you would set the template file in the config directly `$ git config --global commit.template file_name`.
- 
+
 If you want to revert all changes done by the commit, read about [reset](#reset) command.
 
 [🔝 go to table of content](#toc)
@@ -692,7 +726,7 @@ git reset -p
 
 Assuming you are on a `branch_name` branch.
 
-1. `$ git log` - or your favourite log command to find a revision that you are interested in and copy its hash 
+1. `$ git log` - or your favourite log command to find a revision that you are interested in and copy its hash
 * `$ git stash` - to stash all current, uncommitted changes
 * `$ git checkout <revision>` - this updates the working tree with version from the selected revision and puts you in the [detached head state](#detached-head)
 * Look around, review what you wanted
@@ -889,7 +923,7 @@ Creates given number of files with random names, writes 10 lines with random str
 
 * Git under the hood: Advanced Git: Graphs, Hashes, and Compression, Oh My! (https://www.youtube.com/watch?v=ig5E8CcdM9g)
 * List of very handy aliases to make your work with git easier, faster and at times more secure: https://hackernoon.com/lesser-known-git-commands-151a1918a60
-* Specifying git revisions (from `$ man girevisions`): https://www.kernel.org/pub/software/scm/git/docs/gitrevisions.html 
+* Specifying git revisions (from `$ man girevisions`): https://www.kernel.org/pub/software/scm/git/docs/gitrevisions.html
 
 [🔝 go to table of content](#toc)
 
