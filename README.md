@@ -35,7 +35,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
 - [References](#references)
 - [HEAD and heads](#head-and-heads)
 - [Reference shortcuts](#reference-shortcuts)
-- [Specifying revisions](#specifying-revisions)
+- [Specifying revisions[not ready]](#specifying-revisions)
 - [What is a...](#what-is-a)
   * [Upstream](#upstream)
   * [Git staging area](#git-staging-area)
@@ -54,7 +54,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
   * [commit](#commit)
   * [diff](#diff)
   * [fetch](#fetch)
-  * [merge [not ready]](#merge--not-ready-)
+  * [merge](#merge)
   * [pull [not ready]](#pull)
   * [rebase [not ready]](#rebase--not-ready-)
   * [reflog [not ready]](#reflog--not-ready-)
@@ -350,7 +350,7 @@ Each commit has a parent (or more parents in case it's a merge). To reference th
 * some-tag^^ == some-tag~2
 * some-branch^^^ == some-branch~3
 
-Check out https://www.kernel.org/pub/software/scm/git/docs/gitrevisions.html (or `$ man gitrevisions`) to learn more (or EVERYTHING!!!).
+Check out https://www.kernel.org/pub/software/scm/git/docs/gitrevisions.html (or `$ man gitrevisions`) and read the next part below, to learn more (or EVERYTHING!!!).
 
 [🔝 go to table of content](#toc)
 
@@ -407,7 +407,7 @@ Fast-forward merge doesn't create an extra commit for merging the changes (like 
 
 ## commit-ish (tree-ish)
 
-`<commit-ish>` and `<tree-ish>` are names for arguments you can use with some git commands. If a git commands takes a `<commit-ish>` as an argument - it wants to operate on a `<commit>`. If a git commands takes a `<tree-ish>` as an argument - it wants to operate on a `<tree>`. 🔩 Under the hood, git will derefference given `<commit-ish>` or `<tree-ish>` into a `<commit>` or a `<tree>`.
+`<commit-ish>` and `<tree-ish>` are names for arguments you can use with some of the git commands. If a git command takes a `<commit-ish>` as an argument - it wants to operate on a `<commit>` eventually. If a git command takes a `<tree-ish>` as an argument - it wants to operate on a `<tree>` eventually. 🔩 Under the hood, git will dereference the given `<commit-ish>` or `<tree-ish>` into a `<commit>` or a `<tree>`.
 
 Read [git under the hood](#under-the-hood) to understand how git stores its data and meta data (tags, trees, commits, blobs) to make understanding `<commit-ish>` and `<tree-ish>` easier.
 
@@ -655,16 +655,20 @@ Next, while on local master branch, after reviewing changes `$ git diff origin/m
 
 [🔝 go to table of content](#toc)
 
-## merge [not ready]
+## merge
 
-* `(master) $ git merge feature` - applies all changes on top of master changes and creates a merge commit* (*depends on --no-ff)
+* `(master) $ git merge feature` - applies all changes from the `feature` branch on top of master branch (changes) and creates a merge commit (depends on --no-ff option, see [fast forward merge](#fast-forward-merge) for details)
 * `$ git merge --abort` - cancel the merge
+
+Remember! Always commit your changes before starting a merge. Aborting a merge will try to recover the state from before the merge - but 100% success is not guaranteed - your uncommitted changes might get lost!
+
+If you do not feel like committing your changes, stash them, using `git stash`. Read about it here: [stash](#stash)
 
 [🔝 go to table of content](#toc)
 
 ## pull [not ready]
 
-When you use pull, Git tries to automatically do your work for you. It is context sensitive, so Git will merge any pulled commits into the branch you are currently working in.  pull automatically merges the commits without letting you review them first. If you don’t closely manage your branches, you may run into frequent conflicts.
+When you use pull, Git tries to automatically do your work for you. It is context sensitive, so Git will merge any pulled commits into the branch you are currently working in. pull automatically merges the commits without letting you review them first. If you don’t closely manage your branches, you may run into frequent conflicts.
 
 ## rebase [not ready]
 
