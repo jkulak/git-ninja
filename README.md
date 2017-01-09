@@ -289,7 +289,7 @@ Check the parent commit content by typing `git cat-file -p 7ce3`.
 
 As you see, you don't have to use the full hash to access the object. Using first 4 characters is the minimum **if they unambiguously identify an object**. Most git commands show the hash shortened to 7 characters - so I assume that's the safe length for most repositories.
 
-Commit always points to one tree (🔑).
+Commit always points to one, specific tree (🔑).
 
 Another interesting plumbing command is `rev-parse` that will expand the given partial hash (or a reference - please see the next chapter) to a full hash. Try: `git rev-parse 7ce3` to see how it works (use a hash that exists in your repository).
 
@@ -674,7 +674,7 @@ It is most usually used to update your local branch, with changes from the upstr
 
 When you use `pull`, git tries to automatically do your work for you. Git will try to merge any pulled commits into the branch you are currently working in, without letting you review them first. If you don't closely manage your branches, you may run into frequent conflicts.
 
-It is OK for many situations, when working in small teams with a small codebase - but my preferred solution is always to do a `git fetch` and `git merge` after reviewing the changes. Read about the the [`fetch`](#fetch) command to learn how to do it step by step.
+It is OK for many situations, when working in small teams with a small codebase - but my preferred solution is always to do a `git fetch` and a `git merge` after reviewing the changes. Read about the the [`fetch`](#fetch) command to learn how to do it step by step.
 
 Read more about fetching instead of pulling: https://longair.net/blog/2009/04/16/git-fetch-and-merge/
 
