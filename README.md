@@ -674,7 +674,7 @@ It is most usually used to update your local branch, with changes from the upstr
 
 When you use `pull`, git tries to automatically do your work for you. Git will try to merge any pulled commits into the branch you are currently working in, without letting you review them first. If you don't closely manage your branches, you may run into frequent conflicts.
 
-It is OK for many situations, when working in small teams with a small codebase - but my preferred solution is always to do a `git fetch` and `git merge` after reviewing the changes. Read about the the [`fetch`](#fetch) command to learn how to do it step by step.
+It is OK for many situations, when working in small teams with a small codebase - but my preferred solution is always to do a `git fetch` and a `git merge` after reviewing the changes. Read about the the [`fetch`](#fetch) command to learn how to do it step by step.
 
 [🔝 go to table of content](#toc)
 
