@@ -676,6 +676,8 @@ When you use `pull`, git tries to automatically do your work for you. Git will t
 
 It is OK for many situations, when working in small teams with a small codebase - but my preferred solution is always to do a `git fetch` and `git merge` after reviewing the changes. Read about the the [`fetch`](#fetch) command to learn how to do it step by step.
 
+Read more about fetching instead of pulling: https://longair.net/blog/2009/04/16/git-fetch-and-merge/
+
 [🔝 go to table of content](#toc)
 
 ## rebase [not ready]
