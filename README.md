@@ -88,13 +88,13 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
 
 # What is GIT?
 
-Git describes itself as "git - the stupid content tracker" (from `$ man git`). It means that it does not do any magic 🔩 under the hood - it does exactly what **you** tell it to do.
+Git describes itself as "git - the stupid content tracker" (from `man git`). It means that it does not do any magic 🔩 under the hood - it does exactly what **you** tell it to do.
 
-Apart from many excellent git books and tutorials, you can always `$ man git` to read more about it.
+Apart from many excellent git books and tutorials, you can always `man git` to read more about it.
 
-To read about a specific command you can `$ man git-show-ref`, `$ man git-clean`, and so on.
+To read about a specific command you can `man git-show-ref`, `man git-clean`, and so on.
 
-To see a condensed version of the help, with a list of available options for a command, type `$ git reset -h`. Like always, right?
+To see a condensed version of the help, with a list of available options for a command, type `git reset -h`. Like always, right?
 
 [🔝 go to table of content](#toc)
 
@@ -110,7 +110,7 @@ Configuration from local config overwrites the global configuration that overwri
 
 To add/modify configuration settings, you can either edit the files directly, or use git `config` command.
 
-Use `$ git config --global user.email "myname@example.com"` to add/change e-mail address you want to use with your commits.
+Use `git config --global user.email "myname@example.com"` to add/change e-mail address you want to use with your commits.
 
 Switches `--local` (default), `--global`, `--system` will apply changes to appropriate scope/config file.
 
@@ -122,13 +122,13 @@ Config is where you can define your aliases. Alias is a name for a longer comman
 
 I like to see my git logs with more details, so instead of writing every time
 
-`$ git log --pretty=oneline --abbrev-commit --graph --decorate --date=relative`
+`git log --pretty=oneline --abbrev-commit --graph --decorate --date=relative`
 
 I have defined an alias for that command in my global config file by writing
 
-`$ git config --global alias.lg "log --pretty=oneline --abbrev-commit --graph --decorate --date=relative"`
+`git config --global alias.lg "log --pretty=oneline --abbrev-commit --graph --decorate --date=relative"`
 
-Now, every time I run `$ git lg` in any of my repositories, I will see the log formatted the way I like it.
+Now, every time I run `git lg` in any of my repositories, I will see the log formatted the way I like it.
 
 Other examples of aliases that I'm using (from my `~/.gitconfig` file)
 
@@ -163,7 +163,7 @@ source ~/.git-prompt.sh
 PS1='\u, \W $(__git_ps1 "\e[30;42m(%s)\e[m ")\e[0;35m$\e[m '
 ```
 
-Remember to `$ source ~/.bash_profile` for the changes to take effect.
+Remember to `source ~/.bash_profile` for the changes to take effect.
 
 Now whenever you navigate to a git repository, you will see additional info in the prompt.
 
@@ -177,7 +177,7 @@ Then, in your bash configuration file (~/.bash_profile in my case) add:
 source ~/.git-completion.bash
 ```
 
-Remember to `$ source ~/.bash_profile` for the changes to take effect.
+Remember to `source ~/.bash_profile` for the changes to take effect.
 
 Now, you will be able to use TAB key to auto-complete commands, branch names and others.
 
@@ -249,10 +249,10 @@ jdoe, git-ninja (master) $ tree .git/objects/
 
 For performance purposes, objects are stored in the directories named with two, first characters of their hash, and the rest being the filename of the file.
 
-You know those hash identifiers from the `$ git log` command that is listing the hashes for commit objects from your repository.
+You know those hash identifiers from the `git log` command that is listing the hashes for commit objects from your repository.
 
 ```bash
-jdoe, kitchen-lol-slack-bot (dockerize) $ git log --pretty=oneline
+jdoe, kitchen-lol-slack-bot (dockerize) git log --pretty=oneline
 0a1707f228fef8287d09271d1e07e8d75669f5ff Optimise provisionig time
 8ace349d0ddc0118db0281a30854933c52abe7d8 Use nginx as reverse proxy
 2c8696a9e142d1d14a45eef7bbf61d36009d5193 Remove unofficial cookbook dependecies
@@ -266,9 +266,9 @@ All objects store by git are compressed by Objects are compressed with zlib, so 
 
 Git offers several low-level commands (also known as plumbing commands - as opposed to porcelain commands - that you are familiar with, like: branch, add, commit, push) to examine stored objects.
 
-Use `$ git cat-file -t d3f732a` to view type of the object (it will be a one of mentioned above four types: blob, tree, commit or tag).
+Use `git cat-file -t d3f732a` to view type of the object (it will be a one of mentioned above four types: blob, tree, commit or tag).
 
-Use `$ git cat-file -p d3f732a` to view the content of the object. For a commit object you will see something like
+Use `git cat-file -p d3f732a` to view the content of the object. For a commit object you will see something like
 
 ```bash
 tree ba40ec9f2089afbc1b88c49e60814445c4b916b7
@@ -285,13 +285,13 @@ Fill README.md with 👍🏻 and ❤️
 * `committer` stores the information about the user that committed the changes.
 * Last lines contain the commit message.
 
-Check the parent commit content by typing `$ git cat-file -p 7ce3`.
+Check the parent commit content by typing `git cat-file -p 7ce3`.
 
 As you see, you don't have to use the full hash to access the object. Using first 4 characters is the minimum **if they unambiguously identify an object**. Most git commands show the hash shortened to 7 characters - so I assume that's the safe length for most repositories.
 
 Commit always points to one tree (🔑).
 
-Another interesting plumbing command is `rev-parse` that will expand the given partial hash (or a reference - please see the next chapter) to a full hash. Try: `$ git rev-parse 7ce3` to see how it works (use a hash that exists in your repository).
+Another interesting plumbing command is `rev-parse` that will expand the given partial hash (or a reference - please see the next chapter) to a full hash. Try: `git rev-parse 7ce3` to see how it works (use a hash that exists in your repository).
 
 [🔝 go to table of content](#toc)
 
@@ -301,14 +301,14 @@ Remembering long hashes is not an easy task - so using them in your daily work w
 
 References are easy to remember names that point to a commit hash and can be used interchangeably with hashes. 🔩 Under the hood, references are text files that store the 40 character hash that identifies (references) a commit.
 
-You can see those files by listing the `.git/refs` directory. Try `$ find .git/refs`. There is a git plumbing command for that as well: `$ git show-ref` - that will list all references with their corresponding commit hashes.
+You can see those files by listing the `.git/refs` directory. Try `find .git/refs`. There is a git plumbing command for that as well: `git show-ref` - that will list all references with their corresponding commit hashes.
 
-Some references will point to your branches `$ git show-ref | grep heads` or `$ git show-ref --heads`, other reference tags `$ git show-ref --tags` and other your remote branches and tags `$ git show-ref | grep remote`.
+Some references will point to your branches `git show-ref | grep heads` or `git show-ref --heads`, other reference tags `git show-ref --tags` and other your remote branches and tags `git show-ref | grep remote`.
 
 Thanks to references system we can use branch and tag names with git commands, like
 
-* `$ git rev-parse master` - to see the hash of the latest commit in master branch
-* `$ git cat-file -p my-branch` - to see the content of the latest commit object in my-branch
+* `git rev-parse master` - to see the hash of the latest commit in master branch
+* `git cat-file -p my-branch` - to see the content of the latest commit object in my-branch
 
 [🔝 go to table of content](#toc)
 
@@ -318,10 +318,10 @@ HEAD is a reference to the latest commit in currently checked out branch[*]. HEA
 
 [*] - there is an exception to that, please check the [detached head](#detached-head) chapter.
 
-When you list `.git/refs/heads` directory, or run `$ git show-ref --heads` you might see several entries
+When you list `.git/refs/heads` directory, or run `git show-ref --heads` you might see several entries
 
 ```bash
-jdoe, inr-api (new-school-deployment) $ git show-ref --heads
+jdoe, inr-api (new-school-deployment) git show-ref --heads
 f88023944e7059f4636dd68fd819b514f4819fda refs/heads/develop
 0396959e8e2be4ef255f274589f862755d90cab1 refs/heads/master
 4663e74ce653141d27b9ba92d17f9d9299c91393 refs/heads/new-school-deployment
@@ -329,9 +329,9 @@ f88023944e7059f4636dd68fd819b514f4819fda refs/heads/develop
 
 Those are the heads that are available, and actually, those are the branches that are available in your local repository!
 
-You will get a similar output after running `$ git branch -v`.
+You will get a similar output after running `git branch -v`.
 
-While on `new-school-deployment` branch, run `$ git checkout develop` to switch to `develop` branch. 🔩 Under the hood it means updating content of `.git/HEAD` file, by changing it's content from `ref: refs/heads/new-school-deployment` to `ref: refs/heads/develop` - now your HEAD points to `refs/heads/develop` which contains hash of the latest commit of `develop` branch. 😃
+While on `new-school-deployment` branch, run `git checkout develop` to switch to `develop` branch. 🔩 Under the hood it means updating content of `.git/HEAD` file, by changing it's content from `ref: refs/heads/new-school-deployment` to `ref: refs/heads/develop` - now your HEAD points to `refs/heads/develop` which contains hash of the latest commit of `develop` branch. 😃
 
 [🔝 go to table of content](#toc)
 
@@ -350,7 +350,7 @@ Each commit has a parent (or more parents in case it's a merge). To reference th
 * some-tag^^ == some-tag~2
 * some-branch^^^ == some-branch~3
 
-Check out https://www.kernel.org/pub/software/scm/git/docs/gitrevisions.html (or `$ man gitrevisions`) and read the next part below, to learn more (or EVERYTHING!!!).
+Check out https://www.kernel.org/pub/software/scm/git/docs/gitrevisions.html (or `man gitrevisions`) and read the next part below, to learn more (or EVERYTHING!!!).
 
 [🔝 go to table of content](#toc)
 
@@ -391,9 +391,9 @@ Files that are staged (added to the next commit), are still a part of the workin
 
 Detached HEAD happens, when you move to a place in your repository that is not the latest commit of any of the existing branches.
 
-This can happen, for example, when you execute `$ git checkout cd924da` (or `$ git checkout HEAD~2` - which will switch to the working tree from two commits ago). Simply, when you checkout any commit that is not a head of any existing branch.
+This can happen, for example, when you execute `git checkout cd924da` (or `git checkout HEAD~2` - which will switch to the working tree from two commits ago). Simply, when you checkout any commit that is not a head of any existing branch.
 
-🔩 Under the hood, it means that the main HEAD (`.git/HEAD`) is not referencing any of the existing heads in the project (`$ git show-ref --heads`) and therefore is detached 😬.
+🔩 Under the hood, it means that the main HEAD (`.git/HEAD`) is not referencing any of the existing heads in the project (`git show-ref --heads`) and therefore is detached 😬.
 
 It's nothing scary, you are not loosing any files nor commits. Read [what to do when you find yourself in the detached head state](#detached-head-state).
 
@@ -465,7 +465,7 @@ Most of the commands will accept several universal options, like
 *  `-f` (`--force`) - potential a dangerous one if you are not 100% what you are doing and how to use it. Always consult a more experience colleague before "forcing" any of the commands on common repositories
 *  `-q` (`--quiet`) - quiet mode, surpress feedback (non-error) messages
 
-Often, using a capital letter as an option will mean forcing that option. I.e. `$ git branch -D <branch_name>` is same as `$ git branch -d --force <branch_name>`.
+Often, using a capital letter as an option will mean forcing that option. I.e. `git branch -D <branch_name>` is same as `git branch -d --force <branch_name>`.
 
 Below I have listed the most popular/useful commands with their most useful usage (and less known tricks/options) in my opinion.
 
@@ -475,40 +475,40 @@ Below I have listed the most popular/useful commands with their most useful usag
 
 Adds files from your working tree to the staging area (in other words, makes a snapshot of selected files/changes in your working tree to be used with the next commit).
 
-* `$ git add .` - add all files from the current directory in the working tree to the staging area (stage all files from the working tree). Using `$ git add *` for that purpose skips files that names being with a dot (and usually you don't want to skip those, and if you do - put them in the `.gitignore` file).
-* `$ git add -p` (`--patch`) - review every change made in files, and if needed stage only parts of the file. Apart from making sure your changes are what you actually want to commit, it also lets you see if,  by accident, you are not staging any `console.log()` or `var_dump()` statements (if you don't have hooks set up to do it for you).
+* `git add .` - add all files from the current directory in the working tree to the staging area (stage all files from the working tree). Using `git add *` for that purpose skips files that names being with a dot (and usually you don't want to skip those, and if you do - put them in the `.gitignore` file).
+* `git add -p` (`--patch`) - review every change made in files, and if needed stage only parts of the file. Apart from making sure your changes are what you actually want to commit, it also lets you see if,  by accident, you are not staging any `console.log()` or `var_dump()` statements (if you don't have hooks set up to do it for you).
 
-There are other parameters to tweak the behaviour of `add` command, like `-u` (`--update`) to only add files that area already tracked. To learn more, try `$ man git-add`.
+There are other parameters to tweak the behaviour of `add` command, like `-u` (`--update`) to only add files that area already tracked. To learn more, try `man git-add`.
 
 [🔝 go to table of content](#toc)
 
 ## bisect
 
-Bisect helps you easily find a commit where a particular change (maybe a bug?) was introduced. It's definitely helpful when working with big repositories with thousands of commits. It simply splits the provided range of commits (can be a whole history), divides it in two, and asks you to confirm if the current commit in the middle contains the change (`$ git bisect bad`) or not (`$ git bisect good`). After your answer, the range is being narrowed down and the step is repeated until you find the commit you are looking for. It's called bisect because it's using [binary search algorithm](https://en.wikipedia.org/wiki/Binary_search_algorithm)
+Bisect helps you easily find a commit where a particular change (maybe a bug?) was introduced. It's definitely helpful when working with big repositories with thousands of commits. It simply splits the provided range of commits (can be a whole history), divides it in two, and asks you to confirm if the current commit in the middle contains the change (`git bisect bad`) or not (`git bisect good`). After your answer, the range is being narrowed down and the step is repeated until you find the commit you are looking for. It's called bisect because it's using [binary search algorithm](https://en.wikipedia.org/wiki/Binary_search_algorithm)
 
 How to perform a bisect search?
 
-1. `$ git bisect start` or `$ git bisect start master 3fff687`
-2. `$ git bisect bad` - to mark current commit as bad (you need to set at least one commit as bad - can be an older one - for the search to make sense - otherwise there wouldn't be any bad commits to compare to)
-3. `$ git bisect good v1.1.3` - to mark one of the commits (tags) as good, this is optional, if you don't do it, the bisect will start from the very first commit
-4. `$ git bisect next` - to continue the bisect search, git-bisect will switch to the commit in the middle of the range, and will wait for you to perform either `$ git bisect good` - to mark the commit as good, or  `$ git bisect bad` - to mark the commit as bad and to repeat the step 4) until you find the commit that introduced the change you were looking for.
+1. `git bisect start` or `git bisect start master 3fff687`
+2. `git bisect bad` - to mark current commit as bad (you need to set at least one commit as bad - can be an older one - for the search to make sense - otherwise there wouldn't be any bad commits to compare to)
+3. `git bisect good v1.1.3` - to mark one of the commits (tags) as good, this is optional, if you don't do it, the bisect will start from the very first commit
+4. `git bisect next` - to continue the bisect search, git-bisect will switch to the commit in the middle of the range, and will wait for you to perform either `git bisect good` - to mark the commit as good, or  `git bisect bad` - to mark the commit as bad and to repeat the step 4) until you find the commit that introduced the change you were looking for.
 
 You can automate the testing process by providing the `bisect` command with a shell script that will check if the change is present or not.
 
-You can try bisecting on any repository without worrying about making undesirable changes. When you find yourself lost, just type `$ git bisect reset` to leave the bisecting mode and return where you started.
+You can try bisecting on any repository without worrying about making undesirable changes. When you find yourself lost, just type `git bisect reset` to leave the bisecting mode and return where you started.
 
 To perform a test `bisect`, you can clone the `npm/npm` repository from GitHub (for example) and using the `scripts/bisect-test.sh` script from this repository check when the given file was created.
 
 ```bash
 # copy the bisect-text.sh script to the working tree
-$ git bisect start master e790c85a061
-$ git bisect run ./bisect-test.sh
+git bisect start master e790c85a061
+git bisect run ./bisect-test.sh
 ```
 
 And after couple of seconds, you will get
 
 ```bash
-jdoe, npm ((3fff687...)|BISECTING) $ git bisect run ./bisect-test.sh
+jdoe, npm ((3fff687...)|BISECTING) git bisect run ./bisect-test.sh
 running ./bisect-test.sh
 [...]
 Running the bisect testing script...
@@ -526,9 +526,9 @@ Git `branch` can work with single branch or all branches - depending if you supp
 
 The most popular uses, without giving it a particular branch are
 
-* `$ git branch` - to list all the existing branches
-* `$ git branch -a` - will include remote branches (`-r` shows only remote-tracking branches)
-* `$ git branch -v` - gives (like always) more verbose output - here it includes the hashes and commit messages
+* `git branch` - to list all the existing branches
+* `git branch -a` - will include remote branches (`-r` shows only remote-tracking branches)
+* `git branch -v` - gives (like always) more verbose output - here it includes the hashes and commit messages
 
 Like always, if you want to see, how those branches are stored, have a look inside
 
@@ -537,9 +537,9 @@ Like always, if you want to see, how those branches are stored, have a look insi
 
 The most popular, branch specific uses include
 
-* `$ git branch <new_branch_name>` - create a branch. This command will not switch  to the new branch. To create a new branch and switch to it (check it out), use `$ git checkout -b <new_branch_name>`)
-* `$ git branch -d <branch_name>` - deletes the branch from the local repository (but if it existed in the remote directory - it will still exist there, and you will be able to pull it). To delete from a remote location, use `$ git push origin --delete <branch_name>` (a shortcut for that, using a colon syntax, is `$ git push origin :<branch_name>`). In case the branch has changes, and was not merged, you will see an error message, and to force the deletion, you will have to use `-D` option.
-* `$ git branch -m <new_branch_name>` - rename your current branch to <new_branch_name> (and the corresponding reflog)
+* `git branch <new_branch_name>` - create a branch. This command will not switch  to the new branch. To create a new branch and switch to it (check it out), use `git checkout -b <new_branch_name>`)
+* `git branch -d <branch_name>` - deletes the branch from the local repository (but if it existed in the remote directory - it will still exist there, and you will be able to pull it). To delete from a remote location, use `git push origin --delete <branch_name>` (a shortcut for that, using a colon syntax, is `git push origin :<branch_name>`). In case the branch has changes, and was not merged, you will see an error message, and to force the deletion, you will have to use `-D` option.
+* `git branch -m <new_branch_name>` - rename your current branch to <new_branch_name> (and the corresponding reflog)
 
 [🔝 go to table of content](#toc)
 
@@ -549,12 +549,12 @@ Git checkout, does two things; either switches between branches, or checks out a
 
 To checkout means to update your files/directories with the version of the file or directory (tree), or the whole working tree (all your files) from a given revision from your repository.
 
-Checking out a whole working tree (i.e. a previous commit - that is not a HEAD of any branches), like `$ git checkout  551c3e0` would lead to a [detached head state](#detached-head).
+Checking out a whole working tree (i.e. a previous commit - that is not a HEAD of any branches), like `git checkout  551c3e0` would lead to a [detached head state](#detached-head).
 
-* `$ git checkout <branch_name>` - switch to an existing `<branch_name>`. Using the `-b` option will create new branch before checking it out. That is git 101.
-* `$ git checkout master~3 <file_name>` - update <file_name> with a version from master~3 (this can be any revision, where the file <file_name> existed). If no revision is supplied, git will try to checkout the file from the latest tree/commit. You can use this after accidentally deleting a file from a working tree.
+* `git checkout <branch_name>` - switch to an existing `<branch_name>`. Using the `-b` option will create new branch before checking it out. That is git 101.
+* `git checkout master~3 <file_name>` - update <file_name> with a version from master~3 (this can be any revision, where the file <file_name> existed). If no revision is supplied, git will try to checkout the file from the latest tree/commit. You can use this after accidentally deleting a file from a working tree.
 
-You would use `$ git checkout -b feature_x origin/feature_x` in case you want to start working on a branch, that is present in the upstream, but not in your local repository.
+You would use `git checkout -b feature_x origin/feature_x` in case you want to start working on a branch, that is present in the upstream, but not in your local repository.
 
 [🔝 go to table of content](#toc)
 
@@ -562,7 +562,7 @@ You would use `$ git checkout -b feature_x origin/feature_x` in case you want to
 
 Git `cherry-pick` is used to apply commits from another branch onto the current one. It's often used when you commit something to a wrong branch, and you want to move it to a proper one. It doesn't move the commits, it creates the new commit, with a new sha-1.
 
-* `$ git cherry-pick <revision>` - to copy the commit to current branch. If you want to get rid of the commit from the source branch, see [reset](#reset)
+* `git cherry-pick <revision>` - to copy the commit to current branch. If you want to get rid of the commit from the source branch, see [reset](#reset)
 
 See the full entry for [cherry-pick](https://www.kernel.org/pub/software/scm/git/docs/git-cherry-pick.html) in the The Linux man-pages project.
 
@@ -574,7 +574,7 @@ Git `clean` removes untracked files from the repository.
 
 It comes in handy, when you, for example, unzip an archive in your working tree with many files. Git `clean` does not remove directories by default. To remove also untracked directories, add `-d` option.
 
-`$ git clean -i -d` - `-i` stars for interactive, and the command will lead you through the rest of the process.
+`git clean -i -d` - `-i` stars for interactive, and the command will lead you through the rest of the process.
 
 Remember that you can use it inside on of the directories in the repository, not necessarily in the root directory of the repository.
 
@@ -588,26 +588,26 @@ The `commit` command is used to create a revision (record changes to the reposit
 
 After staging the changes (in most cases by using the `add` command), record them to the repository by running
 
-`$ git commit -m "Make component X read Y"` - this creates a new revision and shows a standard output:
+`git commit -m "Make component X read Y"` - this creates a new revision and shows a standard output:
 
 ```bash
-jdoe, docker-proxy (use-proxy) $ git commit -m "Run traffic through proxy"
+jdoe, docker-proxy (use-proxy) git commit -m "Run traffic through proxy"
 [use-proxy 9003f2e] Run traffic through proxy
  3 files changed, 8 insertions(+), 8 deletions(-)
  delete mode 100755 docker/temp-proxy.sh
  create mode 100644 proxy.go
 ```
 
-Output shows the short hash for the created revision (9003f2e), and the changes that have been committed. To see the full hash of the latest revision, either run `$ git log` or `$ git cat-file -p use-proxy` (where `use-proxy` is the name of the current branch you just committed to) or `$ git rev-parse 9003f2e`.
+Output shows the short hash for the created revision (9003f2e), and the changes that have been committed. To see the full hash of the latest revision, either run `git log` or `git cat-file -p use-proxy` (where `use-proxy` is the name of the current branch you just committed to) or `git rev-parse 9003f2e`.
 
 Not supplying the inline commit message with the `-m` option will result in git opening the default text editor (or the one specified in the config) to add the commit message. Changes are applied after you save the file with the message and exit the editor. I found using console based text editors the easiest and the fastest (and you don't need to know a lot about them - it is just several basic commands that you will use - so go and try to learn `vim`, `emacs`, `pico` or `nano`).
 
-* `$ git config --global core.editor vim` - to change the text editor that is being used (of course, name the editor of your choice)
-* `$ git commit --amend -m "Stop component X from doing Y"` - to fix a typo you made in the last commit message. This creates a new revision with a new hash (overwriting the latest commit/revision - so you will not the see the one with the typo in the history). Usually you should not overwrite your changes after you have published them (pushed to the upstream repository - read about [overwriting the history](#overwriting-the-history)).
+* `git config --global core.editor vim` - to change the text editor that is being used (of course, name the editor of your choice)
+* `git commit --amend -m "Stop component X from doing Y"` - to fix a typo you made in the last commit message. This creates a new revision with a new hash (overwriting the latest commit/revision - so you will not the see the one with the typo in the history). Usually you should not overwrite your changes after you have published them (pushed to the upstream repository - read about [overwriting the history](#overwriting-the-history)).
 
 Same like `add` command, `commit` can take a `-p` (`--patch`) option, to interactively select changes to commit.
 
-To make sure that all commit messages follow one standard, `commit` command can take a `-t` (`--template`) option that will provide file name with a template for the commit message, and therefore git will start the text editor with the content of the given file. Usually you would set the template file in the config directly `$ git config --global commit.template file_name`.
+To make sure that all commit messages follow one standard, `commit` command can take a `-t` (`--template`) option that will provide file name with a template for the commit message, and therefore git will start the text editor with the content of the given file. Usually you would set the template file in the config directly `git config --global commit.template file_name`.
 
 If you want to revert all changes done by the commit, read about [reset](#reset) command.
 
@@ -617,15 +617,15 @@ If you want to revert all changes done by the commit, read about [reset](#reset)
 
 Git `diff` shows the differences/changes between commits, tags, staging area and working tree. In the regular daily workflow of a developer, those three variants are most useful
 
-* `$ git diff` - without any parameters, it will show the changes between the working tree and the staging area (all changes you have introduced after last git `add` command).
-* `$ git diff --staged` - (previous option name `--cached`) shows changes between the staging area (staged for the next commit) and the last last commit (current `HEAD`), it doesn't show any changes you introduced after your last git `add` command.
-* `$ git diff HEAD` - shows all changed introduced after last commit. In other words, it shows all changes between the working tree (either staged or not) and the current `HEAD`.
+* `git diff` - without any parameters, it will show the changes between the working tree and the staging area (all changes you have introduced after last git `add` command).
+* `git diff --staged` - (previous option name `--cached`) shows changes between the staging area (staged for the next commit) and the last last commit (current `HEAD`), it doesn't show any changes you introduced after your last git `add` command.
+* `git diff HEAD` - shows all changed introduced after last commit. In other words, it shows all changes between the working tree (either staged or not) and the current `HEAD`.
 
-It is possible to compare two commits, by running `diff` with their hashes: `$ git diff 9664c64 e748eab` or using the revision shortcuts like: `$ git diff HEAD~11 HEAD`.
+It is possible to compare two commits, by running `diff` with their hashes: `git diff 9664c64 e748eab` or using the revision shortcuts like: `git diff HEAD~11 HEAD`.
 
 To get a summary of file changes, use the `--raw` option.
 
-`$ git diff master~8 master --raw` that will result in a similar (kind of) output, showing which files have been added/modified/deleted
+`git diff master~8 master --raw` that will result in a similar (kind of) output, showing which files have been added/modified/deleted
 
 ```
 :100644 100644 9bae3ce... 1860be7... M  Dockerfile
@@ -657,8 +657,8 @@ Next, while on local master branch, after reviewing changes `git diff origin/mas
 
 ## merge
 
-* `(master) $ git merge feature` - applies all changes from the `feature` branch on top of master branch (changes) and creates a merge commit (depends on --no-ff option, see [fast forward merge](#fast-forward-merge) for details)
-* `$ git merge --abort` - cancel the merge
+* `(master) git merge feature` - applies all changes from the `feature` branch on top of master branch (changes) and creates a merge commit (depends on --no-ff option, see [fast forward merge](#fast-forward-merge) for details)
+* `git merge --abort` - cancel the merge
 
 Remember! Always commit your changes before starting a merge. Aborting a merge will try to recover the state from before the merge - but 100% success is not guaranteed - your uncommitted changes might get lost!
 
@@ -680,7 +680,7 @@ It is OK for many situations, when working in small teams with a small codebase 
 
 ## rebase [not ready]
 
-* `(my_feature) $ git rebase master` - applied all changes from master before feature changes
+* `(my_feature) git rebase master` - applied all changes from master before feature changes
 
 - don't overwrite public history
 - only rebase on local branches, before pushing
@@ -695,7 +695,7 @@ It is OK for many situations, when working in small teams with a small codebase 
 
 Reflog is your friend when you are lost (and that can happen often when you are rewriting history).
 
-* `$ git reflog` - to see the list of hashes with the last actions
+* `git reflog` - to see the list of hashes with the last actions
 
 [🔝 go to table of content](#toc)
 
@@ -703,9 +703,9 @@ Reflog is your friend when you are lost (and that can happen often when you are 
 
 git reset -p
 
-* `$ git reset HEAD~` - unstage files, keep working tree (uses --mixed as default)
-* `$ git reset --soft HEAD~` - keep files staged, keep working tree
-* `$ git reset --hard HEAD~` - unstage files, clear working tree (deletes files)
+* `git reset HEAD~` - unstage files, keep working tree (uses --mixed as default)
+* `git reset --soft HEAD~` - keep files staged, keep working tree
+* `git reset --hard HEAD~` - unstage files, clear working tree (deletes files)
 
 - git reset --hard to any commit in any branch to move head there
 
@@ -738,12 +738,12 @@ git reset -p
 
 Assuming you are on a `branch_name` branch.
 
-1. `$ git log` - or your favourite log command to find a revision that you are interested in and copy its hash
-* `$ git stash` - to stash all current, uncommitted changes
-* `$ git checkout <revision>` - this updates the working tree with version from the selected revision and puts you in the [detached head state](#detached-head)
+1. `git log` - or your favourite log command to find a revision that you are interested in and copy its hash
+* `git stash` - to stash all current, uncommitted changes
+* `git checkout <revision>` - this updates the working tree with version from the selected revision and puts you in the [detached head state](#detached-head)
 * Look around, review what you wanted
-* `$ git checkout branch_name` - to return to the latest version of your branch
-* `$ git stash pop` - to bring your uncommitted changes back
+* `git checkout branch_name` - to return to the latest version of your branch
+* `git stash pop` - to bring your uncommitted changes back
 
 [🔝 go to table of content](#toc)
 
@@ -768,20 +768,20 @@ See: [reset](#reset)
 
 ## Unstage file [not ready]
 
-* `$ git reset file_name`
+* `git reset file_name`
 
 [🔝 go to table of content](#toc)
 
 ## Unstage everything [not ready]
 
-* `$ git reset`
+* `git reset`
 
 [🔝 go to table of content](#toc)
 
 ## Recover deleted file (already staged) [not ready]
 
-1. `$ git reset -- <file>` - this restores the file status in the staging area
-2. `$ git checkout -- <file>` - then check out a copy from the staging area
+1. `git reset -- <file>` - this restores the file status in the staging area
+2. `git checkout -- <file>` - then check out a copy from the staging area
 
 Use `--` to split commands from parameters
 
@@ -789,10 +789,10 @@ Use `--` to split commands from parameters
 
 ## Recover lost commit [not ready]
 
-1. `$ git reflog` - to see the list of hashes with last actions
-* `$ git checkout hash` - to look around if that's what you need (enters detached HEAD state)
-* `$ git checkout my_branch` - to move to the branch you want to fix
-* `$ git reset --hard hash` - to move it to the desirable state
+1. `git reflog` - to see the list of hashes with last actions
+* `git checkout hash` - to look around if that's what you need (enters detached HEAD state)
+* `git checkout my_branch` - to move to the branch you want to fix
+* `git reset --hard hash` - to move it to the desirable state
 
 [🔝 go to table of content](#toc)
 
@@ -800,10 +800,10 @@ Use `--` to split commands from parameters
 
 List of some commands that I find handy, and are not easy to come up with
 
-* `$ git checkout -` - checkout last used branch
-* `$ git grep keyword` - greps directory returning results with searched keyword (by default ignores files in your `.gitignore`)
-* `$ git shortlog -sne` - show number of commits per person with their e-mail address
-* `$ git rev-list --max-parents=0 HEAD` show the hash of the first commit
+* `git checkout -` - checkout last used branch
+* `git grep keyword` - greps directory returning results with searched keyword (by default ignores files in your `.gitignore`)
+* `git shortlog -sne` - show number of commits per person with their e-mail address
+* `git rev-list --max-parents=0 HEAD` show the hash of the first commit
 
 [🔝 go to table of content](#toc)
 
@@ -878,7 +878,7 @@ Your cooperation model depends heavily on your organisation, so it discuss inter
 * Don't commit any debug/test code (`var_dump()`, `console.log()`, etc.) — you could automate this, by setting up a pre-commit hook
 * Stick to coding standards defined for your project... obviously (tabs or spaces, function names, etc.)
 * Have linting implemented in your workflow (with shared/common configuration among your team)
-* When pulling from origin use `$ git pull --rebase` - to put your changes on top of new remote changes
+* When pulling from origin use `git pull --rebase` - to put your changes on top of new remote changes
 
 [🔝 go to table of content](#toc)
 
@@ -935,14 +935,14 @@ Creates given number of files with random names, writes 10 lines with random str
 
 * Git under the hood: Advanced Git: Graphs, Hashes, and Compression, Oh My! (https://www.youtube.com/watch?v=ig5E8CcdM9g)
 * List of very handy aliases to make your work with git easier, faster and at times more secure: https://hackernoon.com/lesser-known-git-commands-151a1918a60
-* Specifying git revisions (from `$ man girevisions`): https://www.kernel.org/pub/software/scm/git/docs/gitrevisions.html
+* Specifying git revisions (from `man girevisions`): https://www.kernel.org/pub/software/scm/git/docs/gitrevisions.html
 
 [🔝 go to table of content](#toc)
 
 # My notes - won't be here in the final version
 
 * alias.m = "checkout master"
-* (Side note: `$ while :; do clear; ls .git/objects -a; sleep 2; done`)
+* (Side note: `while :; do clear; ls .git/objects -a; sleep 2; done`)
 
 - DAG directed acyclic graph
 - hash, 40 characters, sha-1, globally unique
