@@ -55,7 +55,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
   * [diff](#diff)
   * [fetch](#fetch)
   * [merge](#merge)
-  * [pull [not ready]](#pull)
+  * [pull](#pull)
   * [rebase [not ready]](#rebase--not-ready-)
   * [reflog [not ready]](#reflog--not-ready-)
   * [reset [not ready]](#reset--not-ready-)
@@ -645,13 +645,13 @@ To get a summary of file changes, use the `--raw` option.
 
 Git `fetch` fetches data from the upstream repository and puts it in the local history (without changing any files nor merging the changes).
 
-Behind the scenes, a `$ git pull` does a git `fetch` and a `merge` on a currently checked out branch, so using a git `fetch` explicitly gives you more control over what is happening, and you can review the fetched changes, before merging them.
+Behind the scenes, a `git pull` does a git `fetch` and a `merge` on a currently checked out branch, so using a git `fetch` explicitly gives you more control over what is happening, and you can review the fetched changes, before merging them.
 
 Git `fetch` will update your remote-tracking branches under `.git/refs/remotes/<remote>/`. This operation does not change any of your local branches, nor does it update the working tree.
 
-* `$ git fetch origin/master` - to update your history (not a working tree) with changes from the upstream master branch.
+* `git fetch origin/master` - to update your history (not a working tree) with changes from the upstream master branch.
 
-Next, while on local master branch, after reviewing changes `$ git diff origin/master`, you can merge the changes you want by running `$ git merge origin/master`.
+Next, while on local master branch, after reviewing changes `git diff origin/master`, you can merge the changes you want by running `git merge origin/master`.
 
 [🔝 go to table of content](#toc)
 
@@ -666,9 +666,17 @@ If you do not feel like committing your changes, stash them, using `git stash`. 
 
 [🔝 go to table of content](#toc)
 
-## pull [not ready]
+## pull
 
-When you use pull, Git tries to automatically do your work for you. It is context sensitive, so Git will merge any pulled commits into the branch you are currently working in. pull automatically merges the commits without letting you review them first. If you don’t closely manage your branches, you may run into frequent conflicts.
+Git `pull`, pulls (downloads) and integrates (tries to merge) changes from another repository.
+
+It is most usually used to update your local branch, with changes from the upstream branch.
+
+When you use `pull`, git tries to automatically do your work for you. Git will try to merge any pulled commits into the branch you are currently working in, without letting you review them first. If you don't closely manage your branches, you may run into frequent conflicts.
+
+It is OK for many situations, when working in small teams with a small codebase - but my preferred solution is always to do a `git fetch` and `git merge` after reviewing the changes. Read about the the [`fetch`](#fetch) command to learn how to do it step by step.
+
+[🔝 go to table of content](#toc)
 
 ## rebase [not ready]
 
