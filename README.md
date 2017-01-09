@@ -289,9 +289,9 @@ Check the parent commit content by typing `$ git cat-file -p 7ce3`.
 
 As you see, you don't have to use the full hash to access the object. Using first 4 characters is the minimum **if they unambiguously identify an object**. Most git commands show the hash shortened to 7 characters - so I assume that's the safe length for most repositories.
 
-Commit always points to one tree (🔑).
+Commit always points to one, specific tree (🔑).
 
-Another interesting plumbing command is `rev-parse` that will expand the given partial hash (or a reference - please see the next chapter) to a full hash. Try: `$ git rev-parse 7ce3` to see how it works (use a hash that exists in your repository).
+Another interesting plumbing command is `rev-parse` that will expand the given partial hash (or a reference - please see the next chapter) to a full hash. Try: `git rev-parse 7ce3` to see how it works (use a hash that exists in your repository).
 
 [🔝 go to table of content](#toc)
 
@@ -301,9 +301,9 @@ Remembering long hashes is not an easy task - so using them in your daily work w
 
 References are easy to remember names that point to a commit hash and can be used interchangeably with hashes. 🔩 Under the hood, references are text files that store the 40 character hash that identifies (references) a commit.
 
-You can see those files by listing the `.git/refs` directory. Try `$ find .git/refs`. There is a git plumbing command for that as well: `$ git show-ref` - that will list all references with their corresponding commit hashes.
+You can see those files by listing the `.git/refs` directory. Try `find .git/refs`. There is a git plumbing command for that as well: `git show-ref` - that will list all references with their corresponding commit hashes.
 
-Some references will point to your branches `$ git show-ref | grep heads` or `$ git show-ref --heads`, other reference tags `$ git show-ref --tags` and other your remote branches and tags `$ git show-ref | grep remote`.
+Some references will point to your branches `git show-ref | grep heads` or `git show-ref --heads`, other reference tags `git show-ref --tags` and other your remote branches and tags `$ git show-ref | grep remote`.
 
 Thanks to references system we can use branch and tag names with git commands, like
 
