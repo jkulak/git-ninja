@@ -43,7 +43,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
   * [Detached HEAD](#detached-head)
   * [Fast-forward merge](#fast-forward-merge)
   * [commit-ish (tree-ish)](#commit-ish-tree-ish)
-  * [Git hook [not ready]](#git-hook)
+  * [Git hook](#git-hook)
 - [Commands](#commands)
   * [add](#add)
   * [bisect](#bisect)
@@ -445,9 +445,23 @@ Below the abstract from the documentation (taken from the accepted answer from [
 
 [🔝 go to table of content](#toc)
 
-## Git hook [not ready]
+## Git hook
 
-Git hooks are...
+Git hooks are user defined scripts that are executed before or after several git events such as: commit, push, checkout, rebase.
+
+You can configure which hooks should trigger your scripts to improve your workflow and productivity. Some examples of git hooks include
+
+* pre-commit: Check commit message for required format for given project
+* post-merge: Email the team about a merge
+* pre-rebase: Inform user about risks of rebasing published history
+
+To enable a hook, see the content of `.git/hooks` - it contains a selection of .sample files containing scripts for several hooks - remove `.sample` from the filename and make the file executable.
+
+Hooks are executed locally (on your repository, and not on the remote servers).
+
+To expand your knowledge about git hooks, head to http://githooks.com/
+
+GitHub allows you to define webhooks for your repositories, which are an extended version of git hooks, and are executed on GitHub server.
 
 [🔝 go to table of content](#toc)
 
