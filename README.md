@@ -56,7 +56,7 @@ It's beyond the scope of this file to give a full coverage of git, so if you're 
   * [fetch](#fetch)
   * [merge](#merge)
   * [pull](#pull)
-  * [rebase [not ready]](#rebase--not-ready-)
+  * [rebase](#rebase)
   * [reflog [not ready]](#reflog--not-ready-)
   * [reset [not ready]](#reset--not-ready-)
   * [revert [not ready]](#revert--not-ready-)
@@ -694,16 +694,115 @@ Read more about fetching instead of pulling: https://longair.net/blog/2009/04/16
 
 [🔝 go to table of content](#toc)
 
-## rebase [not ready]
+## rebase
 
-* `(my_feature) git rebase master` - applied all changes from master before feature changes
+Rebase does three main things, from which, first two are very popular in a regular daily git workflow:
 
-- don't overwrite public history
-- only rebase on local branches, before pushing
-- `git rebase branch --exec "gulp test"`
+1. it updates your current feature branch with the new changes from the branch you used to create your feature branch (i.e. `git rebase master`)
+2. it cleans/edits the history of you current feature branch (i.e. `git rebase -i HEAD~4`)
+3. it removes unwanted commits from the history (i.e. `git rebase --onto featA~5 featA~4 featA`)
 
-1. Rebase branch over master
-2. Rebase -i to clean the history
+It is usually used when you are trying to "keep your commit history clean" - but the approach depends on the model, your team is working in - read more about it here: [Git workflows](#git-workflows).
+
+Since `rebase` lets overwrite the commit history - it is crucial to know, that rebasing (overwriting) the public history (commits that were published already and might be in use by other people) is considered a bad practice, and usually should not be done. The rule is simple: "do not overwrite public history" - rebase your local feature branches, before you make them public and other people start using them.
+
+### 1. Updating your current branch
+
+Generally "rebasing" means changing the base of the branch. When you created your feature branch, git did not copy the original branch, it just set the parent for your new branch where you started. After some time, the original branch might have some new changes (done before and after changes in your feature branch). Running `git rebase master` (being currently on your feature branch, and assuming you branched of master branch), will set the parent for your feature branch, to the newest master commit. It means that your feature branch, will now include all the newest changes from the master branch.
+
+See below:
+
+```
+                  A---B---C feature
+                 /
+            D---E---F---G master
+```
+
+Now, we run `(feature) $ git rebase master` and our tree changes to:
+
+```
+                          A'--B'--C' feature
+                         /
+            D---E---F---G master
+```
+
+We have created the feature branch E commit, from master branch - and this was the parent commit for the feature branch. After we made some changes in the feature branch, there were some changes made in the master branch as well. To keep our branch up to date, and make sure, that our later merge will be easier, we want to include those changes in our feature branch. As seen above we can achieve it by rebasing the branch (there are other ways to do it - depending on the way you work with your team, you could for example merge master branch onto your feature branch).
+
+Rebasing can be interrupted by conflicts in the code. Your prompt will usually indicate that you are currently rebasing and there are conflicts to be resolved. After resolving a conflict, add the file to the staging are and continue rebasing by `git rebase --continue`. Alternatively you can stop/undo the rebase with `git rebase --abort` which takes you to the state from where you started rebasing.
+
+Merging a recently rebased branch will usually result in a [Fast-forward merge](#fast-forward-merge) (unless it is not allowed by the settings).
+
+### 2. Editing the history of the current feature branch
+
+The other use of `rebase` is to clean up the history of the branch you are currently working on. It is called interactive rebase. It will let you remove unnecessary commits, rewrite the commit messages and squashing excessive commits (keeping the changes, but removing the commit from the history).
+
+To start an interactive rebase run `git rebase -i HEAD~5` where `HEAD~5` is the oldest commit you want to include in your rebase. To learn more about specifying revisions, read: [Specifying revisions](#specifying-revisions)
+
+This command will open a text editor with a list of commits starting from the one you have specified as an argument, that will look like that:
+
+```
+pick 51db298 Describe commitish and treeish
+pick d98e39e Add merge command descritpion
+pick 91ec080 Add pull section
+pick 215027d Update formatting of the command line commands
+pick dbcabe1 Add link to fetch not pull article
+pick 9d5b446 Update README.md
+pick 15850c7 Update README.md
+pick cff4e05 Add git hooks paragraph
+pick 4794b4a Add first part of rebase
+
+# Rebase 602322a..4794b4a onto 602322a (9 commands)
+#
+# Commands:
+# p, pick = use commit
+# r, reword = use commit, but edit the commit message
+# e, edit = use commit, but stop for amending
+# s, squash = use commit, but meld into previous commit
+# f, fixup = like "squash", but discard this commit's log message
+# x, exec = run command (the rest of the line) using shell
+# d, drop = remove commit
+```
+
+Now, you can edit each line, that currently say `pick` to update it with the command you want. Options are described when performing the `rebase` and they are self-explanatory. You can use either the letter, or the whole command for your purpose. The edited rebase file, for the example above, could look like that
+
+```
+pick 51db298 Describe commitish and treeish
+pick d98e39e Add merge command descritpion
+pick 91ec080 Add pull section
+s 215027d Update formatting of the command line commands
+s dbcabe1 Add link to fetch not pull article
+s 9d5b446 Update README.md
+s 15850c7 Update README.md
+pick cff4e05 Add git hooks paragraph
+r 4794b4a Add first part of rebase
+
+# Rebase 602322a..4794b4a onto 602322a (9 commands)
+#
+# Commands:
+# p, pick = use commit
+# r, reword = use commit, but edit the commit message
+# e, edit = use commit, but stop for amending
+# s, squash = use commit, but meld into previous commit
+# f, fixup = like "squash", but discard this commit's log message
+# x, exec = run command (the rest of the line) using shell
+# d, drop = remove commit
+```
+
+After saving the and exiting the text editor, git will squash commits `215027d`, `dbcabe1`, '9d5b446', '15850c7' onto previous commit (previous in this view are the commits _above_ the selected commit - that is why, you can not squash the first commit from the top in that view) with message "Add pull section", since those commits were only tiny changes I made to the "pull section" (now commit `91ec080` will contain those changes, and will appear like I only committed once). Next, git will ask me to enter the new commit message for the newest commit from the list, that I wanted to reword. After my changes, my history will look like that
+
+```
+$ git logm
+* 4794b4a Add first part of rebase
+* cff4e05 Add git hooks paragraph
+* 4df8488 Add pull section
+* d98e39e Add merge command descritpion
+* 51db298 Describe commitish and treeish
+...
+```
+
+`git logm` is my own alias for custom log format (read about it here: [aliases](#aliases)). Mind that the hash of the commit "Add pull section" changed - since now it contains changes from those other commits that were squashed onto it.
+
+Always make sure which git working model was adopted by your team, if it is preferred to rebase before branching (to keep the history clean) or it is advisable to perform a merge to keep the branching history.
 
 [🔝 go to table of content](#toc)
 
