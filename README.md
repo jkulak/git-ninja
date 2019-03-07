@@ -481,7 +481,7 @@ Most of the commands will accept several universal options, like
 
 Often, using a capital letter as an option will mean forcing that option. I.e. `git branch -D <branch_name>` is same as `git branch -d --force <branch_name>`.
 
-Below I have listed the most popular/useful commands with their most useful usage (and less known tricks/options) in my opinion.
+Below I have listed the most popular/useful commands with their most useful usage (and less known tricks/options).
 
 [🔝 go to table of content](#toc)
 
