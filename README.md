@@ -262,7 +262,7 @@ c6c558ae4ec422b9a10bff1ffc73bfc08aa4e225 Install gulp-cli
 [...]
 ```
 
-All objects store by git are compressed by Objects are compressed with zlib, so viewing the file in your editor won't show anything you might be interested in at the moment.
+All objects stored by git are compressed with zlib, so viewing the file in your editor won't show anything you might be interested in at the moment.
 
 Git offers several low-level commands (also known as plumbing commands - as opposed to porcelain commands - that you are familiar with, like: branch, add, commit, push) to examine stored objects.
 
@@ -331,7 +331,7 @@ Those are the heads that are available, and actually, those are the branches tha
 
 You will get a similar output after running `git branch -v`.
 
-While on `new-school-deployment` branch, run `git checkout develop` to switch to `develop` branch. 🔩 Under the hood it means updating content of `.git/HEAD` file, by changing it's content from `ref: refs/heads/new-school-deployment` to `ref: refs/heads/develop` - now your HEAD points to `refs/heads/develop` which contains hash of the latest commit of `develop` branch. 😃
+While on `new-school-deployment` branch, run `git checkout develop` to switch to `develop` branch. 🔩 Under the hood it means updating content of `.git/HEAD` file, by changing it's content from `ref: refs/heads/new-school-deployment` to `ref: refs/heads/develop` - now your HEAD points to `refs/heads/develop` which contains hash of the latest commit of `develop` branch.
 
 [🔝 go to table of content](#toc)
 
@@ -342,8 +342,8 @@ You might have seen things like `HEAD^`, `HEAD~4` and `master^^`.
 Each commit has a parent (or more parents in case it's a merge). To reference the parent commit, you can use `^` or `~` syntax.
 
 * HEAD == the commit I'm currently sitting in
-* HEAD^ == this commit's father
-* HEAD^^ == this commit's grandfather
+* HEAD^ == this commit's parent
+* HEAD^^ == this commit's grandparent
 * HEAD^ == HEAD~1 == HEAD~ (🔑)
 * HEAD^^^^^ == HEAD~5
 * master^ == master~
