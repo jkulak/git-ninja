@@ -389,7 +389,7 @@ Files that are staged (added to the next commit), are still a part of the workin
 
 ## Detached HEAD
 
-Detached HEAD happens, whenever you checkout a particular commit or a tag (instead of a branch). Even when you checkout the latest commit from a branch, your HEAD (`cat .git/HEAD`) point to a parcticular commit (hash) and not a reference. Detached HEAD might happen, when you move to a place in your repository that is not the latest commit of any of the existing branches.
+Detached HEAD happens, whenever you checkout a particular commit or a tag (instead of a branch). Even when you checkout the latest commit from a branch, your HEAD points to a parcticular commit (hash) and not a reference. Detached HEAD might happen, when you move to a place in your repository that is not the latest commit of any of the existing branches.
 
 This can happen, for example, when you execute `git checkout cd924da` (or `git checkout HEAD~2` - which will switch to the working tree from two commits ago). Simply, when you checkout any commit that is not a head of any existing branch.
 
@@ -401,7 +401,7 @@ It's nothing scary, you are not loosing any files nor commits. Read [what to do 
 
 ## Fast-forward merge
 
-Fast-forward merge doesn't create an extra commit for merging the changes (like GitHub pull request does), and keeps the history linear. 🔩 Under the hood, it means that the head of the branch that we are merging on to is simply moved to the head of the branch that we are merging from.
+Fast-forward merge doesn't create an extra commit for merging the changes (like GitHub pull request does), and keeps the history linear. 🔩 Under the hood, it means that the HEAD of the branch that we are merging on to is simply moved to the head of the branch that we are merging from.
 
 [🔝 go to table of content](#toc)
 
