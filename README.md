@@ -262,7 +262,7 @@ c6c558ae4ec422b9a10bff1ffc73bfc08aa4e225 Install gulp-cli
 [...]
 ```
 
-All objects store by git are compressed by Objects are compressed with zlib, so viewing the file in your editor won't show anything you might be interested in at the moment.
+All objects stored by git are compressed with zlib, so viewing the file in your editor won't show anything you might be interested in at the moment.
 
 Git offers several low-level commands (also known as plumbing commands - as opposed to porcelain commands - that you are familiar with, like: branch, add, commit, push) to examine stored objects.
 
@@ -331,7 +331,7 @@ Those are the heads that are available, and actually, those are the branches tha
 
 You will get a similar output after running `git branch -v`.
 
-While on `new-school-deployment` branch, run `git checkout develop` to switch to `develop` branch. 🔩 Under the hood it means updating content of `.git/HEAD` file, by changing it's content from `ref: refs/heads/new-school-deployment` to `ref: refs/heads/develop` - now your HEAD points to `refs/heads/develop` which contains hash of the latest commit of `develop` branch. 😃
+While on `new-school-deployment` branch, run `git checkout develop` to switch to `develop` branch. 🔩 Under the hood it means updating content of `.git/HEAD` file, by changing it's content from `ref: refs/heads/new-school-deployment` to `ref: refs/heads/develop` - now your HEAD points to `refs/heads/develop` which contains hash of the latest commit of `develop` branch.
 
 [🔝 go to table of content](#toc)
 
@@ -342,8 +342,8 @@ You might have seen things like `HEAD^`, `HEAD~4` and `master^^`.
 Each commit has a parent (or more parents in case it's a merge). To reference the parent commit, you can use `^` or `~` syntax.
 
 * HEAD == the commit I'm currently sitting in
-* HEAD^ == this commit's father
-* HEAD^^ == this commit's grandfather
+* HEAD^ == this commit's parent
+* HEAD^^ == this commit's grandparent
 * HEAD^ == HEAD~1 == HEAD~ (🔑)
 * HEAD^^^^^ == HEAD~5
 * master^ == master~
@@ -481,7 +481,7 @@ Most of the commands will accept several universal options, like
 
 Often, using a capital letter as an option will mean forcing that option. I.e. `git branch -D <branch_name>` is same as `git branch -d --force <branch_name>`.
 
-Below I have listed the most popular/useful commands with their most useful usage (and less known tricks/options) in my opinion.
+Below I have listed the most popular/useful commands with their most useful usage (and less known tricks/options).
 
 [🔝 go to table of content](#toc)
 
@@ -489,10 +489,10 @@ Below I have listed the most popular/useful commands with their most useful usag
 
 Adds files from your working tree to the staging area (in other words, makes a snapshot of selected files/changes in your working tree to be used with the next commit).
 
-* `git add .` - add all files from the current directory in the working tree to the staging area (stage all files from the working tree). Using `git add *` for that purpose skips files that names being with a dot (and usually you don't want to skip those, and if you do - put them in the `.gitignore` file).
+* `git add .` - add all files from the current directory in the working tree to the staging area (stage all files from the working tree). Using `git add *` for that purpose skips files that names begin with a dot (and usually you don't want to skip those, and if you do - put them in the `.gitignore` file).
 * `git add -p` (`--patch`) - review every change made in files, and if needed stage only parts of the file. Apart from making sure your changes are what you actually want to commit, it also lets you see if,  by accident, you are not staging any `console.log()` or `var_dump()` statements (if you don't have hooks set up to do it for you).
 
-There are other parameters to tweak the behaviour of `add` command, like `-u` (`--update`) to only add files that area already tracked. To learn more, try `man git-add`.
+There are other parameters to tweak the behaviour of `add` command, like `-u` (`--update`) to only add files that are already tracked. To learn more, try `man git-add`.
 
 [🔝 go to table of content](#toc)
 
@@ -563,9 +563,9 @@ Git checkout, does two things; either switches between branches, or checks out a
 
 To checkout means to update your files/directories with the version of the file or directory (tree), or the whole working tree (all your files) from a given revision from your repository.
 
-Checking out a whole working tree (i.e. a previous commit - that is not a HEAD of any branches), like `git checkout  551c3e0` would lead to a [detached head state](#detached-head).
+Checking out a whole working tree (i.e. a previous commit - that is not a HEAD of any branches), like `git checkout 551c3e0` would lead to a [detached head state](#detached-head).
 
-* `git checkout <branch_name>` - switch to an existing `<branch_name>`. Using the `-b` option will create new branch before checking it out. That is git 101.
+* `git checkout <branch_name>` - switch to an existing `<branch_name>`. Using the `-b` option will create a new branch before checking it out.
 * `git checkout master~3 <file_name>` - update <file_name> with a version from master~3 (this can be any revision, where the file <file_name> existed). If no revision is supplied, git will try to checkout the file from the latest tree/commit. You can use this after accidentally deleting a file from a working tree.
 
 You would use `git checkout -b feature_x origin/feature_x` in case you want to start working on a branch, that is present in the upstream, but not in your local repository.
@@ -588,9 +588,9 @@ Git `clean` removes untracked files from the repository.
 
 It comes in handy, when you, for example, unzip an archive in your working tree with many files. Git `clean` does not remove directories by default. To remove also untracked directories, add `-d` option.
 
-`git clean -i -d` - `-i` stars for interactive, and the command will lead you through the rest of the process.
+`git clean -i -d` - `-i` stands for interactive, and the command will lead you through the rest of the process.
 
-Remember that you can use it inside on of the directories in the repository, not necessarily in the root directory of the repository.
+Remember that you can use it inside one of the directories in the repository, not necessarily in the root directory of the repository.
 
 As with most of the git commands, you can use `-n` option to only dry-run the process to see what is there to be removed - recommended!
 
@@ -684,7 +684,7 @@ If you do not feel like committing your changes, stash them, using `git stash`. 
 
 Git `pull`, pulls (downloads) and integrates (tries to merge) changes from another repository.
 
-It is most usually used to update your local branch, with changes from the upstream branch.
+It is most often used to update your local branch, with changes from the upstream branch.
 
 When you use `pull`, git tries to automatically do your work for you. Git will try to merge any pulled commits into the branch you are currently working in, without letting you review them first. If you don't closely manage your branches, you may run into frequent conflicts.
 
@@ -949,9 +949,9 @@ Basically -- remove any excessive whitespace and empty lines from your files -
 
 Of course your preferences may vary, so those are just suggestions.
 
-Best if you make your favourite code editor take care of all those points (all the most popular code editors have you covered check out Atom or Sublime Text).
+Best if you make your favourite code editor take care of all those points (all the most popular code editors have you covered check out Atom, Sublime Text or Visual Studio Code).
 
-I found it a good solution to have a `.editorconfig` file in your repository (http://editorconfig.org/) that is shared with other contributors, that fixes the crucial configuration for your editors (and is supported by most of the popular editors). An example of a `.editorconfig` file: [https://github.com/babel/babel/blob/master/.editorconfig](https://github.com/babel/babel/blob/master/.editorconfig)
+I find it a good approach to have a `.editorconfig` file in your repository (http://editorconfig.org/) that is shared with other contributors, that fixes the crucial configuration for your editors (and is supported by most of the popular editors). An example of a `.editorconfig` file: [https://github.com/babel/babel/blob/master/.editorconfig](https://github.com/babel/babel/blob/master/.editorconfig)
 
 [🔝 go to table of content](#toc)
 
